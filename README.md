@@ -1,2 +1,2 @@
-# java-sprint1-hw1
-Repository for homework project
+# java-kanban
+Repository for homework project.
