@@ -1,10 +1,10 @@
-package TuskManager;
+package TaskManager;
 
 import java.util.Objects;
 
-public class SubTusk extends Tusk { //добавил параметр для связи с эпиком
+public class SubTask extends Task { //добавил параметр для связи с эпиком
     Integer epicId;
-    public SubTusk(String name, Integer id, String description, String status, Integer epicId) {
+    public SubTask(String name, Integer id, String description, String status, Integer epicId) {
         super(name, id, description, status);
         this.epicId = epicId;
     }
@@ -15,7 +15,7 @@ public class SubTusk extends Tusk { //добавил параметр для с�
 
     @Override
     public String toString() {
-        return "SubTusk{" +
+        return "SubTask{" +
                 ", name='" + name + '\'' +
                 ", id=" + id +
                 ", description='" + description + '\'' +
@@ -27,10 +27,10 @@ public class SubTusk extends Tusk { //добавил параметр для с�
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SubTusk)) return false;
+        if (!(o instanceof SubTask)) return false;
         if (!super.equals(o)) return false;
-        SubTusk subTusk = (SubTusk) o;
-        return Objects.equals(epicId, subTusk.epicId);
+        SubTask subTask = (SubTask) o;
+        return Objects.equals(epicId, subTask.epicId);
     }
 
     @Override

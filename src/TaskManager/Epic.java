@@ -1,6 +1,6 @@
-package TuskManager;
+package TaskManager;
 
-public class Epic extends Tusk { //тут связь с сабтасками идёт по айди эпика
+public class Epic extends Task { //тут связь с сабтасками идёт по айди эпика
 
    public Epic(String name, Integer id, String description, String status) {
 
