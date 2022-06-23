@@ -3,15 +3,19 @@ package TaskManager;
 import java.util.Objects;
 
 public class Task { // класс родитель
-    String name; // название задачи
-    Integer id; // идентификационный номер (будет ключём в мапе)
-    String description; // описание задачи
-    final String status; // статус задачи NEW IN_PROGRESS DONE
+    protected String name; // название задачи
+    protected Integer id; // идентификационный номер (будет ключём в мапе)
+    protected String description; // описание задачи
+    protected String status; // статус задачи NEW IN_PROGRESS DONE
 
     public Task(String name, Integer id, String description, String status) {
         this.name = name;
         this.id = id;
         this.description = description;
+        this.status = status;
+    }
+
+    public void setStatus(String status) {
         this.status = status;
     }
 

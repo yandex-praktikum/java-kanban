@@ -3,7 +3,7 @@ package TaskManager;
 import java.util.Objects;
 
 public class SubTask extends Task { //добавил параметр для связи с эпиком
-    Integer epicId;
+    protected Integer epicId;
     public SubTask(String name, Integer id, String description, String status, Integer epicId) {
         super(name, id, description, status);
         this.epicId = epicId;
