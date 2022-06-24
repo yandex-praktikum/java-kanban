@@ -118,6 +118,13 @@ public class Manager {
     private ArrayList<SubTask> getSubTask() { // возвращает лист сабтасков
         return (ArrayList<SubTask>) subTaskData.values();
     }
+    private ArrayList<SubTask> getEpicSubtasks(int epicId){
+    for(Integer id : subTaskData.keySet()){
+        if(subTaskData.get(id).getEpicId().equals(epicId))
+            return (ArrayList<SubTask>) subTaskData.values();
+        }
+    return null;
+    }
 
     private void findEpicStatus(int epicId) { // вычисляет статус эпика
 
