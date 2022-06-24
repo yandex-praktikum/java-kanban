@@ -77,6 +77,7 @@ public class Manager {
         for(int ids : epicData.keySet()){
             if(epicData.get(ids).getSubTaskId(id) == id) { // если нашел такой id в списке subTaskIds
                 epicData.get(ids).deleteSubTaskFromList(id); // удалил
+                findEpicStatus(ids); // пересчитал статус эпика
             }
         }
     }
