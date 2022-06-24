@@ -1,4 +1,4 @@
-package TaskManager;
+package Task;
 
 import java.util.Objects;
 

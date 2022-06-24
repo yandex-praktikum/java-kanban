@@ -1,12 +1,11 @@
 package Manager;
 
-import TaskManager.Epic;
-import TaskManager.SubTask;
-import TaskManager.Task;
+import Task.Epic;
+import Task.SubTask;
+import Task.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 
 public class Manager {
