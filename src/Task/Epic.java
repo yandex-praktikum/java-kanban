@@ -11,19 +11,18 @@ protected ArrayList<Integer> subTaskIds = new ArrayList<>();
     public void deleteSubTaskIds() { // очистить список айди сабтасков
        subTaskIds.clear();
     }
+
     public void addSubTaskIds(int id){ // добавить айди в список при добавлении новой сабтаски
        subTaskIds.add(id);
     }
+
     public void deleteSubTaskFromList(int id){ //
                 subTaskIds.remove(id);
     }
-    public int getSubTaskId(int id) {
-        for (int subId : subTaskIds) {
-            if (subId == id) return id;
-        }
-        return 0;
-    }
 
+    public int getSubTaskId(int id) {
+        return subTaskIds.get(id);
+    }
 
     public ArrayList<Integer> getSubTaskIds() {
         return subTaskIds;

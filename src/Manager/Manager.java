@@ -59,7 +59,7 @@ public class Manager {
 
     private void deleteAllSubTask() { // удаляет все задачи из мапы
         subTaskData.clear();
-        for(int id : epicData.keySet()){
+        for (int id : epicData.keySet()) {
             epicData.get(id).deleteSubTaskIds(); // чистит списки айди в эпиках
         }
     }
@@ -74,8 +74,8 @@ public class Manager {
 
     private void deleteSubTaskById(int id) { // удаляет сабтаск из мапы по id
         subTaskData.remove(id);
-        for(int ids : epicData.keySet()){
-            if(epicData.get(ids).getSubTaskId(id) == id) { // если нашел такой id в списке subTaskIds
+        for (int ids : epicData.keySet()) {
+            if (epicData.get(ids).getSubTaskId(id) == id) { // если нашел такой id в списке subTaskIds
                 epicData.get(ids).deleteSubTaskFromList(id); // удалил
                 findEpicStatus(ids); // пересчитал статус эпика
             }
@@ -96,7 +96,7 @@ public class Manager {
                 .getStatus().equals(subTask.getStatus())) { // если не null и статус изменился
             subTaskData.put(subTask.getId(), subTask); // заменили сабтаск
             findEpicStatus(subTaskData.get(subTask.getId()).getEpicId());// и пересчитали статус эпика
-            } else {
+        } else {
             subTaskData.put(subTask.getId(), subTask); // если статус не изменился, только заменили сабтаск
         }
     }
@@ -117,29 +117,32 @@ public class Manager {
     private ArrayList<SubTask> getSubTask() { // возвращает лист сабтасков
         return (ArrayList<SubTask>) subTaskData.values();
     }
-    private ArrayList<SubTask> getEpicSubtasks(int epicId){
-    for(Integer id : subTaskData.keySet()){
-        if(subTaskData.get(id).getEpicId().equals(epicId))
-            return (ArrayList<SubTask>) subTaskData.values();
+
+    private ArrayList<SubTask> getEpicSubTasks(int epicId) {
+        ArrayList<SubTask> epicSubTasks = new ArrayList<>();
+        for (Integer id : subTaskData.keySet()) {
+            if (subTaskData.get(id).getEpicId().equals(epicId)) {
+                epicSubTasks.add(subTaskData.get(id));
+            }
         }
-    return null;
+        return epicSubTasks;
     }
 
-    private void findEpicStatus(int epicId) { // вычисляет статус эпика
+        private void findEpicStatus ( int epicId){ // вычисляет статус эпика
 
-        if (epicData.get(epicId).getSubTaskIds().isEmpty()) {
-            epicData.get(epicId).setStatus("NEW");
-        } else  {
-            for (Integer id : subTaskData.keySet()) {
-                if (subTaskData.get(id).getStatus().equals("DONE") && !subTaskData.get(id).getStatus().equals("NEW")) {
-                    epicData.get(epicId).setStatus("DONE");
-                } else {
-                    epicData.get(epicId).setStatus("IN_PROGRESS");
+            if (epicData.get(epicId).getSubTaskIds().isEmpty()) {
+                epicData.get(epicId).setStatus("NEW");
+            } else {
+                for (Integer id : subTaskData.keySet()) {
+                    if (subTaskData.get(id).getStatus().equals("DONE") && !subTaskData.get(id).getStatus().equals("NEW")) {
+                        epicData.get(epicId).setStatus("DONE");
+                    } else {
+                        epicData.get(epicId).setStatus("IN_PROGRESS");
+                    }
                 }
             }
         }
     }
-}
 
 
 
