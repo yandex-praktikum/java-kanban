@@ -15,11 +15,7 @@ protected ArrayList<Integer> subTaskIds = new ArrayList<>();
        subTaskIds.add(id);
     }
     public void deleteSubTaskFromList(int id){ //
-        for (int subId : subTaskIds){
-            if (subTaskIds.get(subId-1) == id){
-                subTaskIds.remove(subId - 1);
-            }
-        }
+                subTaskIds.remove(id);
     }
     public int getSubTaskId(int id) {
         for (int subId : subTaskIds) {

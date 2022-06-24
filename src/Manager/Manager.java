@@ -6,6 +6,7 @@ import TaskManager.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class Manager {
@@ -106,16 +107,16 @@ public class Manager {
             epicData.put(epic.getId(), epic);
     }
 
-    private ArrayList getTask(HashMap<Integer, Task> task) { // возвращает лист тасков
-        return (ArrayList) task.values();
+    private ArrayList<Task> getTask() { // возвращает лист тасков
+        return (ArrayList<Task>) taskData.values();
     }
 
-    private ArrayList getEpic(HashMap<Integer, Epic> epic) { // возвращает лист эпиков
-        return (ArrayList) epic.values();
+    private ArrayList<Epic> getEpic() { // возвращает лист эпиков
+        return (ArrayList<Epic>) epicData.values();
     }
 
-    private ArrayList getSubTask(HashMap<Integer, SubTask> subTask) { // возвращает лист сабтасков
-        return (ArrayList) subTask.values();
+    private ArrayList<SubTask> getSubTask() { // возвращает лист сабтасков
+        return (ArrayList<SubTask>) subTaskData.values();
     }
 
     private void findEpicStatus(int epicId) { // вычисляет статус эпика
