@@ -16,7 +16,7 @@ protected ArrayList<Integer> subTaskIds = new ArrayList<>();
        subTaskIds.add(id);
     }
 
-    public void deleteSubTaskFromList(int id){ //
+    public void deleteSubTaskFromList(Integer id){ //
                 subTaskIds.remove(id);
     }
 

@@ -6,6 +6,7 @@ import Task.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 
 public class Manager {
@@ -15,6 +16,20 @@ public class Manager {
     private final HashMap<Integer, Task> taskData = new HashMap<>();
     private final HashMap<Integer, Epic> epicData = new HashMap<>();
     private final HashMap<Integer, SubTask> subTaskData = new HashMap<>();
+    Epic epic = new Epic("Обед", 0, "Котлетки с пюрешкой", "NEW");
+
+    public void test() {
+        addNewEpic(epic);
+        SubTask subTask = new SubTask("Макарошки", 0, "Варим", "DONE", epic.getId());
+        SubTask subTask1 = new SubTask("Пюрешка", 0, "Мнём", "DONE", epic.getId());
+        addNewSubTask(subTask);
+        addNewSubTask(subTask1);
+        System.out.println(epicData);
+        System.out.println(subTaskData);
+        SubTask subTask2 = new SubTask("Пюрешка", 0, "Мнём", "NEW", epic.getId());
+        addNewSubTask(subTask2);
+        System.out.println(epicData);
+    }
 
     private int addNewTask(Task task) { // добавляет задачу в мапу
         task.setId(taskId++);
@@ -32,6 +47,7 @@ public class Manager {
         subTask.setId(subTaskId++);
         subTaskData.put(subTask.getId(), subTask);
         epicData.get(subTask.getEpicId()).addSubTaskIds(subTask.getId());
+        findEpicStatus(subTask.getEpicId()); // пересчитал статус эпика
         return subTask.getId();
     }
 
@@ -64,25 +80,26 @@ public class Manager {
         }
     }
 
-    private void deleteAllEpic() { // удаляет все задачи из мапы
+    private void deleteAllEpic() { // удаляет все эпики и сабтаски из мап
         epicData.clear();
+        subTaskData.clear();
     }
 
     private void deleteTaskById(int id) { // удаляет задачу из мапы по id
         taskData.remove(id);
     }
 
-    private void deleteSubTaskById(int id) { // удаляет сабтаск из мапы по id
+    private void deleteSubTaskById(Integer id) { // удаляет сабтаск из мапы и из листа в эпике и пересчитывает статус
+        Integer epicId = subTaskData.get(id).getEpicId(); // сохранил айди чтобы не было NullPointerException
         subTaskData.remove(id);
-        for (int ids : epicData.keySet()) {
-            if (epicData.get(ids).getSubTaskId(id) == id) { // если нашел такой id в списке subTaskIds
-                epicData.get(ids).deleteSubTaskFromList(id); // удалил
-                findEpicStatus(ids); // пересчитал статус эпика
-            }
-        }
+        epicData.get(epicId).deleteSubTaskFromList(id);
+        findEpicStatus(epicId);
     }
 
-    private void deleteEpicById(int id) { // удаляет задачу из мапы по id
+    private void deleteEpicById(Integer id) { // удаляет задачу из мапы по id
+        for (Integer subId : getEpicById(id).getSubTaskIds()) { // и чистит мапу сабтасков по эпикАйди
+                subTaskData.remove(subId);
+        }
         epicData.remove(id);
     }
 
@@ -92,13 +109,13 @@ public class Manager {
     }
 
     private void updateSubTask(SubTask subTask) { // перезаписывает subTask под тем же id
-        if (subTaskData.get(subTask.getId()) != null && subTaskData.get(subTask.getId())
+        if (subTaskData.get(subTask.getId()) != null && !subTaskData.get(subTask.getId())
                 .getStatus().equals(subTask.getStatus())) { // если не null и статус изменился
             subTaskData.put(subTask.getId(), subTask); // заменили сабтаск
-            findEpicStatus(subTaskData.get(subTask.getId()).getEpicId());// и пересчитали статус эпика
-        } else {
-            subTaskData.put(subTask.getId(), subTask); // если статус не изменился, только заменили сабтаск
+            findEpicStatus(subTaskData.get(subTask.getId()).getEpicId()); // и пересчитали статус эпика
+            return;
         }
+            subTaskData.put(subTask.getId(), subTask); // если статус не изменился, только заменили сабтаск
     }
 
     private void updateEpic(Epic epic) { // перезаписывает epic под тем же id
@@ -128,21 +145,26 @@ public class Manager {
         return epicSubTasks;
     }
 
-        private void findEpicStatus ( int epicId){ // вычисляет статус эпика
-
-            if (epicData.get(epicId).getSubTaskIds().isEmpty()) {
-                epicData.get(epicId).setStatus("NEW");
-            } else {
-                for (Integer id : subTaskData.keySet()) {
-                    if (subTaskData.get(id).getStatus().equals("DONE") && !subTaskData.get(id).getStatus().equals("NEW")) {
-                        epicData.get(epicId).setStatus("DONE");
-                    } else {
-                        epicData.get(epicId).setStatus("IN_PROGRESS");
-                    }
-                }
+    private void findEpicStatus(int epicId) { // вычисляет статус эпика
+        ArrayList<String> statusList = new ArrayList<>();
+        for (Integer id : epicData.get(epicId).getSubTaskIds()) {
+            statusList.add(subTaskData.get(id).getStatus());
+        }
+        int statusIndex = 0;
+        for (int i = 0; i < statusList.size(); i++){
+            if (statusList.get(i).equals("DONE")) {
+                statusIndex++;
             }
         }
+        if (statusIndex == 0) {
+            epicData.get(epicId).setStatus("NEW");
+        } else if (statusIndex == statusList.size()) {
+            epicData.get(epicId).setStatus("DONE");
+        } else {
+            epicData.get(epicId).setStatus("IN_PROGRESS");
+        }
     }
+}
 
 
 
