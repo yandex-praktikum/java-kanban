@@ -1,18 +1,15 @@
-import java.util.ArrayList;
 
 public class Task {
     String name;
     String description;
     int id;
+    private Status status;
 
-    public Task(String name, String description, Status status) {
+    public Task(String name, String description) {
         this.name = name;
         this.description = description;
-        this.status = status;
+        setStatus(Status.NEW);
     }
-
-
-    private Status status;
 
     public Status getStatus() {
         return status;
@@ -32,6 +29,7 @@ public class Task {
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
+                ", id=" + id +
                 '}';
     }
 }
