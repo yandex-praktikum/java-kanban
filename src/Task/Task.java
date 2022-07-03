@@ -6,16 +6,17 @@ public class Task { // класс родитель
     protected String name; // название задачи
     protected Integer id; // идентификационный номер (будет ключём в мапе)
     protected String description; // описание задачи
-    protected String status; // статус задачи NEW IN_PROGRESS DONE
+    //protected String status; // статус задачи NEW IN_PROGRESS DONE
+    Status status;
 
-    public Task(String name, Integer id, String description, String status) {
+    public Task(String name, Integer id, String description, Status status) {
         this.name = name;
         this.id = id;
         this.description = description;
         this.status = status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -43,7 +44,7 @@ public class Task { // класс родитель
         this.description = description;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 

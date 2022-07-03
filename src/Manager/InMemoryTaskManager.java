@@ -6,16 +6,16 @@ import Task.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
+import java.util.List;
 
-
-public class Manager {
+public class InMemoryTaskManager<T extends Task> implements TaskManager {
     private int taskId = 1;
     private int epicId = 1;
     private int subTaskId = 1;
     private final HashMap<Integer, Task> taskData = new HashMap<>();
     private final HashMap<Integer, Epic> epicData = new HashMap<>();
     private final HashMap<Integer, SubTask> subTaskData = new HashMap<>();
+    private final List<T> historyData = new ArrayList<>();
     Epic epic = new Epic("Обед", 0, "Котлетки с пюрешкой", "NEW");
 
     public void test() {
@@ -29,21 +29,27 @@ public class Manager {
         SubTask subTask2 = new SubTask("Пюрешка", 0, "Мнём", "NEW", epic.getId());
         addNewSubTask(subTask2);
         System.out.println(epicData);
+        getEpicById(1);
+        getSubTaskById(1);
+        System.out.println(getHistory());
     }
 
-    private int addNewTask(Task task) { // добавляет задачу в мапу
+    @Override
+    public int addNewTask(Task task) { // добавляет задачу в мапу
         task.setId(taskId++);
         taskData.put(task.getId(), task);
         return task.getId();
     }
 
-    private int addNewEpic(Epic epic) { // добавляет задачу в мапу
+    @Override
+    public int addNewEpic(Epic epic) { // добавляет задачу в мапу
         epic.setId(epicId++);
         epicData.put(epic.getId(), epic);
         return epic.getId();
     }
 
-    private int addNewSubTask(SubTask subTask) { // добавляет задачу в мапу и её айди в лист эпика
+    @Override
+    public int addNewSubTask(SubTask subTask) { // добавляет задачу в мапу и её айди в лист эпика
         subTask.setId(subTaskId++);
         subTaskData.put(subTask.getId(), subTask);
         epicData.get(subTask.getEpicId()).addSubTaskIds(subTask.getId());
@@ -51,64 +57,81 @@ public class Manager {
         return subTask.getId();
     }
 
-    private Task getTaskById(int id) { // получает и возвращает задачу по id
-        if (taskData.get(id) != null)
+    @Override
+    public Task getTaskById(int id) { // получает и возвращает задачу по id
+        if (taskData.get(id) != null) {
+            addHistory((T) taskData.get(id));
             return taskData.get(id);
+        }
         return null;
     }
 
-    private SubTask getSubTaskById(int id) { // получает и возвращает задачу по id
-        if (subTaskData.get(id) != null)
+    @Override
+    public SubTask getSubTaskById(int id) { // получает и возвращает задачу по id
+        if (subTaskData.get(id) != null) {
+            addHistory((T) subTaskData.get(id));
             return subTaskData.get(id);
+        }
         return null;
     }
 
-    private Epic getEpicById(int id) { // получает и возвращает задачу по id
-        if (epicData.get(id) != null)
+    @Override
+    public Epic getEpicById(int id) { // получает и возвращает задачу по id
+        if (epicData.get(id) != null) {
+            addHistory((T) epicData.get(id));
             return epicData.get(id);
+        }
         return null;
     }
 
-    private void deleteAllTask() { // удаляет все задачи из мапы
+    @Override
+    public void deleteAllTask() { // удаляет все задачи из мапы
         taskData.clear();
     }
 
-    private void deleteAllSubTask() { // удаляет все задачи из мапы
+    @Override
+    public void deleteAllSubTask() { // удаляет все задачи из мапы
         subTaskData.clear();
         for (int id : epicData.keySet()) {
             epicData.get(id).deleteSubTaskIds(); // чистит списки айди в эпиках
         }
     }
 
-    private void deleteAllEpic() { // удаляет все эпики и сабтаски из мап
+    @Override
+    public void deleteAllEpic() { // удаляет все эпики и сабтаски из мап
         epicData.clear();
         subTaskData.clear();
     }
 
-    private void deleteTaskById(int id) { // удаляет задачу из мапы по id
+    @Override
+    public void deleteTaskById(int id) { // удаляет задачу из мапы по id
         taskData.remove(id);
     }
 
-    private void deleteSubTaskById(Integer id) { // удаляет сабтаск из мапы и из листа в эпике и пересчитывает статус
+    @Override
+    public void deleteSubTaskById(Integer id) { // удаляет сабтаск из мапы и из листа в эпике и пересчитывает статус
         Integer epicId = subTaskData.get(id).getEpicId(); // сохранил айди чтобы не было NullPointerException
         subTaskData.remove(id);
         epicData.get(epicId).deleteSubTaskFromList(id);
         findEpicStatus(epicId);
     }
 
-    private void deleteEpicById(Integer id) { // удаляет задачу из мапы по id
+    @Override
+    public void deleteEpicById(Integer id) { // удаляет задачу из мапы по id
         for (Integer subId : getEpicById(id).getSubTaskIds()) { // и чистит мапу сабтасков по эпикАйди
                 subTaskData.remove(subId);
         }
         epicData.remove(id);
     }
 
-    private void updateTask(Task task) { // перезаписывает task под тем же id
+    @Override
+    public void updateTask(Task task) { // перезаписывает task под тем же id
         if (taskData.get(task.getId()) != null)
             taskData.put(task.getId(), task);
     }
 
-    private void updateSubTask(SubTask subTask) { // перезаписывает subTask под тем же id
+    @Override
+    public void updateSubTask(SubTask subTask) { // перезаписывает subTask под тем же id
         if (subTaskData.get(subTask.getId()) != null && !subTaskData.get(subTask.getId())
                 .getStatus().equals(subTask.getStatus())) { // если не null и статус изменился
             subTaskData.put(subTask.getId(), subTask); // заменили сабтаск
@@ -118,24 +141,29 @@ public class Manager {
             subTaskData.put(subTask.getId(), subTask); // если статус не изменился, только заменили сабтаск
     }
 
-    private void updateEpic(Epic epic) { // перезаписывает epic под тем же id
+    @Override
+    public void updateEpic(Epic epic) { // перезаписывает epic под тем же id
         if (epicData.get(epic.getId()) != null)
             epicData.put(epic.getId(), epic);
     }
 
-    private ArrayList<Task> getTask() { // возвращает лист тасков
+    @Override
+    public ArrayList<Task> getTask() { // возвращает лист тасков
         return (ArrayList<Task>) taskData.values();
     }
 
-    private ArrayList<Epic> getEpic() { // возвращает лист эпиков
+    @Override
+    public ArrayList<Epic> getEpic() { // возвращает лист эпиков
         return (ArrayList<Epic>) epicData.values();
     }
 
-    private ArrayList<SubTask> getSubTask() { // возвращает лист сабтасков
+    @Override
+    public ArrayList<SubTask> getSubTask() { // возвращает лист сабтасков
         return (ArrayList<SubTask>) subTaskData.values();
     }
 
-    private ArrayList<SubTask> getEpicSubTasks(int epicId) {
+    @Override
+    public ArrayList<SubTask> getEpicSubTasks(int epicId) {
         ArrayList<SubTask> epicSubTasks = new ArrayList<>();
         for (Integer id : subTaskData.keySet()) {
             if (subTaskData.get(id).getEpicId().equals(epicId)) {
@@ -145,7 +173,8 @@ public class Manager {
         return epicSubTasks;
     }
 
-    private void findEpicStatus(int epicId) { // вычисляет статус эпика
+    @Override
+    public void findEpicStatus(int epicId) { // вычисляет статус эпика
         ArrayList<String> statusList = new ArrayList<>();
         for (Integer id : epicData.get(epicId).getSubTaskIds()) {
             statusList.add(subTaskData.get(id).getStatus());
@@ -162,6 +191,17 @@ public class Manager {
             epicData.get(epicId).setStatus("DONE");
         } else {
             epicData.get(epicId).setStatus("IN_PROGRESS");
+        }
+    }
+    @Override
+    public List<T> getHistory() {
+    return historyData;
+    }
+
+    public void addHistory(T task) {
+        historyData.add(task);
+        if (historyData.size() > 10) {
+            historyData.remove(0);
         }
     }
 }
