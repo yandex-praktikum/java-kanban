@@ -6,8 +6,7 @@ public class Task { // класс родитель
     protected String name; // название задачи
     protected Integer id; // идентификационный номер (будет ключём в мапе)
     protected String description; // описание задачи
-    //protected String status; // статус задачи NEW IN_PROGRESS DONE
-    Status status;
+    Status status; // enum статусов
 
     public Task(String name, Integer id, String description, Status status) {
         this.name = name;

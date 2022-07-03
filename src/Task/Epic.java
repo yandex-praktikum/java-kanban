@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Epic extends Task {
 protected ArrayList<Integer> subTaskIds = new ArrayList<>();
-   public Epic(String name, Integer id, String description, String status) {
+   public Epic(String name, Integer id, String description, Status status) {
        super(name, id, description, status);
     }
     public void deleteSubTaskIds() { // очистить список айди сабтасков

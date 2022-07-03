@@ -3,6 +3,7 @@ package Manager;
 import Task.Epic;
 import Task.SubTask;
 import Task.Task;
+import Task.Status;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,17 +17,17 @@ public class InMemoryTaskManager<T extends Task> implements TaskManager {
     private final HashMap<Integer, Epic> epicData = new HashMap<>();
     private final HashMap<Integer, SubTask> subTaskData = new HashMap<>();
     private final List<T> historyData = new ArrayList<>();
-    Epic epic = new Epic("Обед", 0, "Котлетки с пюрешкой", "NEW");
+    Epic epic = new Epic("Обед", 0, "Котлетки с пюрешкой", Status.NEW);
 
     public void test() {
         addNewEpic(epic);
-        SubTask subTask = new SubTask("Макарошки", 0, "Варим", "DONE", epic.getId());
-        SubTask subTask1 = new SubTask("Пюрешка", 0, "Мнём", "DONE", epic.getId());
+        SubTask subTask = new SubTask("Макарошки", 0, "Варим", Status.DONE, epic.getId());
+        SubTask subTask1 = new SubTask("Пюрешка", 0, "Мнём", Status.DONE, epic.getId());
         addNewSubTask(subTask);
         addNewSubTask(subTask1);
         System.out.println(epicData);
         System.out.println(subTaskData);
-        SubTask subTask2 = new SubTask("Пюрешка", 0, "Мнём", "NEW", epic.getId());
+        SubTask subTask2 = new SubTask("Пюрешка", 0, "Мнём", Status.NEW, epic.getId());
         addNewSubTask(subTask2);
         System.out.println(epicData);
         getEpicById(1);
@@ -175,22 +176,22 @@ public class InMemoryTaskManager<T extends Task> implements TaskManager {
 
     @Override
     public void findEpicStatus(int epicId) { // вычисляет статус эпика
-        ArrayList<String> statusList = new ArrayList<>();
+        ArrayList<Status> statusList = new ArrayList<>();
         for (Integer id : epicData.get(epicId).getSubTaskIds()) {
             statusList.add(subTaskData.get(id).getStatus());
         }
         int statusIndex = 0;
         for (int i = 0; i < statusList.size(); i++){
-            if (statusList.get(i).equals("DONE")) {
+            if (statusList.get(i).equals(Status.DONE)) {
                 statusIndex++;
             }
         }
         if (statusIndex == 0) {
-            epicData.get(epicId).setStatus("NEW");
+            epicData.get(epicId).setStatus(Status.NEW);
         } else if (statusIndex == statusList.size()) {
-            epicData.get(epicId).setStatus("DONE");
+            epicData.get(epicId).setStatus(Status.DONE);
         } else {
-            epicData.get(epicId).setStatus("IN_PROGRESS");
+            epicData.get(epicId).setStatus(Status.IN_PROGRESS);
         }
     }
     @Override
