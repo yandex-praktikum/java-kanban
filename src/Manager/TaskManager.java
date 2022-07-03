@@ -47,6 +47,4 @@ public interface TaskManager {
     ArrayList<SubTask> getEpicSubTasks(int epicId);
 
     void findEpicStatus(int epicId);
-    List getHistory();
-
 }
