@@ -6,25 +6,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    protected static List<Task> historyData = new ArrayList<>();
-    public InMemoryHistoryManager(List<Task> historyData) {
-        this.historyData = historyData;
+    private final List<Task> historyData = new ArrayList<>();
+    static final int HISTORY_MAX_SIZE = 10;
+
+    @Override
+    public List<Task> getHistory() {
+        return List.copyOf(historyData);
     }
+
+    @Override
+    public void add(Task task){
+        historyData.add(task);
+        if (historyData.size() > HISTORY_MAX_SIZE) {
+            historyData.remove(0);
+        }
+    }
+
     @Override
     public String toString() {
         return "Task{" +
                 "name='" + historyData;
-    }
-    @Override
-    public List<Task> getHistory() {
-        return historyData;
-    }
-
-    @Override
-    public void addHistory(Task task) {
-        historyData.add(task);
-        if (historyData.size() > 10) {
-            historyData.remove(0);
-        }
     }
 }

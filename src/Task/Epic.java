@@ -1,12 +1,14 @@
 package Task;
 
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Epic extends Task {
-protected ArrayList<Integer> subTaskIds = new ArrayList<>();
-   public Epic(String name, Integer id, String description, Status status) {
-       super(name, id, description, status);
+private List<Integer> subTaskIds = new ArrayList<>();
+    public Epic(String name, Integer id, String description) {
+        super(name, id, description, Status.NEW);
     }
     public void deleteSubTaskIds() { // очистить список айди сабтасков
        subTaskIds.clear();
@@ -24,11 +26,11 @@ protected ArrayList<Integer> subTaskIds = new ArrayList<>();
         return subTaskIds.get(id);
     }
 
-    public ArrayList<Integer> getSubTaskIds() {
+    public List<Integer> getSubTaskIds() {
         return subTaskIds;
     }
 
-    public void setSubTaskIds(ArrayList<Integer> subTaskIds) {
+    public void setSubTaskIds(List<Integer> subTaskIds) {
         this.subTaskIds = subTaskIds;
     }
 

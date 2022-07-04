@@ -1,19 +1,15 @@
 package Manager;
 
-
-import static Manager.InMemoryHistoryManager.historyData;
-
 public class Managers {
 
+    private Managers () {
+    }
 
     public static TaskManager getDefault() {
-            TaskManager manager = new InMemoryTaskManager();
-            return manager;
+            return new InMemoryTaskManager();
         }
+
     public static HistoryManager getDefaultHistory() {
-
-        HistoryManager historyManager = new InMemoryHistoryManager(historyData);
-        return historyManager;
+        return new InMemoryHistoryManager();
     }
     }
-
