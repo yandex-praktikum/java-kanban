@@ -12,14 +12,13 @@ import java.util.Map;
 
 
 public class InMemoryTaskManager implements TaskManager {
-    private int taskId = 1;
-    private int epicId = 1;
-    private int subTaskId = 1;
+    private int taskId = 10;
+    private int epicId = 20;
+    private int subTaskId = 30;
     private final Map<Integer, Task> taskData = new HashMap<>();
     private final Map<Integer, Epic> epicData = new HashMap<>();
     private final Map<Integer, SubTask> subTaskData = new HashMap<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
-
 
     @Override
     public int addNewTask(Task task) { // добавляет задачу в мапу
@@ -73,11 +72,17 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteAllTasks() { // удаляет все задачи из мапы
+        for (int ids : taskData.keySet()) {
+            historyManager.remove(ids);
+        }
         taskData.clear();
     }
 
     @Override
     public void deleteAllSubTasks() { // удаляет все задачи из мапы
+        for (int ids : subTaskData.keySet()) {
+            historyManager.remove(ids);
+        }
         subTaskData.clear();
         for (int id : epicData.keySet()) {
             epicData.get(id).deleteSubTaskIds();// чистит списки айди в эпиках
@@ -88,18 +93,23 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteAllEpics() { // удаляет все эпики и сабтаски из мап
+        for (int ids : epicData.keySet()) {
+            historyManager.remove(ids);
+        }
         epicData.clear();
-        subTaskData.clear();
+        deleteAllSubTasks();
     }
 
     @Override
     public void deleteTaskById(int id) { // удаляет задачу из мапы по id
+        historyManager.remove(id);
         taskData.remove(id);
     }
 
     @Override
     public void deleteSubTaskById(Integer id) { // удаляет сабтаск из мапы и из листа в эпике и пересчитывает статус
         Integer epicId = subTaskData.get(id).getEpicId(); // сохранил айди чтобы не было NullPointerException
+        historyManager.remove(id);
         subTaskData.remove(id);
         epicData.get(epicId).deleteSubTaskFromList(id);
         findEpicStatus(epicId);
@@ -110,6 +120,7 @@ public class InMemoryTaskManager implements TaskManager {
         for (Integer subId : getEpicById(id).getSubTaskIds()) { // и чистит мапу сабтасков по эпикАйди
                 subTaskData.remove(subId);
         }
+        historyManager.remove(id);
         epicData.remove(id);
     }
 

@@ -49,7 +49,7 @@ public class Task { // класс родитель
 
     @Override
     public String toString() {
-        return "TaskManager.Task{" +
+        return "Task{" +
                 "name='" + name + '\'' +
                 ", id=" + id +
                 ", description='" + description + '\'' +
