@@ -118,7 +118,8 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteEpicById(Integer id) { // удаляет задачу из мапы по id
         for (Integer subId : getEpicById(id).getSubTaskIds()) { // и чистит мапу сабтасков по эпикАйди
-                subTaskData.remove(subId);
+            subTaskData.remove(subId);
+            historyManager.remove(subId);
         }
         historyManager.remove(id);
         epicData.remove(id);

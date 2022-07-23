@@ -3,7 +3,7 @@ package Task;
 import java.util.Objects;
 
 public class SubTask extends Task { //добавил параметр для связи с эпиком
-    private Integer epicId;
+    private final Integer epicId;
     public SubTask(String name, Integer id, String description, Status status, Integer epicId) {
         super(name, id, description, status);
         this.epicId = epicId;

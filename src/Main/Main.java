@@ -8,16 +8,6 @@ import Task.SubTask;
 import Task.Task;
 
 public class Main {
-    /*Привет, ревьюер! Я тут реализовал CustomLinkedList в классе InMemoryHistoryManager и вот что из этого получилось:
-      1. Добавил класс Node для хранения узлов.
-      2. Добавил метод linkLast, получился как addLast из LinkedList(надеюсь)
-      3. Добавил метод, который передаёт получившийся CustomLinkedList в обычный лист.
-      4. Добавил мапу nodeData, хранящую узлы по айди(прям как LinkedHashMap)
-      Вроде всё работает, но смущает момент, что перезаписаные узлы в CustomLinkedList не удаляются, хотел прописать
-      условие в linkLast чтобы перезаписать ссылки на prev и next у перезаписанного узла, но не уверен что это нужно
-      и как правильно делать по тз.
-      С нетерпением жду комментариев! :)
-     */
 
     public static void main(String[] args) {
 
@@ -44,11 +34,19 @@ public class Main {
         manager.getEpicById(21);
         System.out.println(manager.getHistory());
         manager.getEpicById(20);
-        manager.getEpicById(20);
+        manager.getEpicById(21);
+        System.out.println(manager.getHistory());
+        manager.getSubTaskById(30);
+        manager.getSubTaskById(31);
+        manager.getSubTaskById(32);
+        System.out.println(manager.getHistory());
+        manager.deleteEpicById(20);
+        System.out.println(manager.getHistory());
+        manager.deleteEpicById(21);
         System.out.println(manager.getHistory());
         manager.getTaskById(10);
-        manager.getEpicById(21);
-        manager.getEpicById(21);
+        System.out.println(manager.getHistory());
+        manager.deleteTaskById(10);
         System.out.println(manager.getHistory());
     }
 }
