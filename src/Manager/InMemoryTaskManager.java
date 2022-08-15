@@ -5,6 +5,7 @@ import Task.SubTask;
 import Task.Task;
 import Task.Status;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,16 +13,16 @@ import java.util.Map;
 
 
 public class InMemoryTaskManager implements TaskManager {
-    private int taskId = 10;
-    private int epicId = 20;
-    private int subTaskId = 30;
-    private final Map<Integer, Task> taskData = new HashMap<>();
-    private final Map<Integer, Epic> epicData = new HashMap<>();
-    private final Map<Integer, SubTask> subTaskData = new HashMap<>();
-    private final HistoryManager historyManager = Managers.getDefaultHistory();
+    protected int taskId = 10;
+    protected int epicId = 20;
+    protected int subTaskId = 30;
+    protected final Map<Integer, Task> taskData = new HashMap<>();
+    protected final Map<Integer, Epic> epicData = new HashMap<>();
+    protected final Map<Integer, SubTask> subTaskData = new HashMap<>();
+    protected final HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
-    public int addNewTask(Task task) { // добавляет задачу в мапу
+    public int addNewTask(Task task) throws IOException { // добавляет задачу в мапу
         task.setId(taskId++);
         taskData.put(task.getId(), task);
         return task.getId();
@@ -116,7 +117,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteEpicById(Integer id) { // удаляет задачу из мапы по id
+    public void deleteEpicById(Integer id) throws IOException { // удаляет задачу из мапы по id
         for (Integer subId : getEpicById(id).getSubTaskIds()) { // и чистит мапу сабтасков по эпикАйди
             subTaskData.remove(subId);
             historyManager.remove(subId);
