@@ -1,11 +1,4 @@
-import Manager.Managers;
-import Manager.TaskManager;
-import Task.Epic;
-import Task.Status;
-import Task.SubTask;
-import Task.Task;
-
-//public class Main {
+public class Main {
 
    /* public static void main(String[] args) {
 
@@ -46,5 +39,5 @@ import Task.Task;
         System.out.println(manager.getHistory());
         manager.deleteTaskById(10);
         System.out.println(manager.getHistory());
-    }
-}*/
+    }*/
+}

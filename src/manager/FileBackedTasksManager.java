@@ -1,13 +1,32 @@
-package Manager;
+package manager;
 
-import Task.*;
+import task.*;
 import java.io.*;
 import java.util.*;
 
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
     static File file = new File("history.csv");
-    String filename = "history.csv";
+    final String filename = "history.csv";
+    /* Привет, ревьюер! Вернулся из отпуска и пытаюсь наверстать упущенное, поторопился и добавил исключение в try
+     без условий :) Исправил, но не уверен чего от меня хотели в тз, буду рад коментариям.
+     В остальном всё восстановилось, всё вызывается, csv перезаписался, единственный момент, что история в csv
+     перезаписалась зеркально, но порядок вызова сохранился. Надеюсь это не проблема :)
+
+     Еще один момент, если есть замечания, то лучше писать их как замечания в коде, а не в основной коментарий,
+     в прошлый раз я его не развернул и увидел только после того, как отправил работу на вторую проверку.
+
+    * По двум замечаниям есть вопросы:
+    *
+    * 1. Почему file static - потому, что если его сделать не статическим, то возникает такая проблема:
+    *  "Non-static field 'file' cannot be referenced from a static context"
+    *  Метод loadFromFile() должен быть статическим, мейн соответственно тоже, вопрос: как тут сделать поле file
+    *  не статическим и им польоваться в статик методах? Я не придумал.
+    *
+    * 2. Почему типы задач у меня String, а не enum - потому, что мне удобней было присваивать тип сразу в String
+    *  и записывать это в csv. Всё равно же придется делать enum.toString() чтобы записать в csv. Ок, я добавлю enum,
+    *  но можно пояснение, какие преимущества это даёт по сравнению с моим решением?
+    *  */
 
     public FileBackedTasksManager(File file) {
         this.file = file;
@@ -95,15 +114,18 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     public void save() { // метод записывает таски и историю в csv
         try (FileWriter fileWriter = new FileWriter(filename, false)) {
+            if (filename.isEmpty()) {
+                throw new ManagerSaveException("Имя файла пустое.");
+            }
             fileWriter.write(taskToString());
-            throw new ManagerSaveException("problems");
-        } catch (ManagerSaveException | IOException e) { // не понял что от меня хотят в тз, поэтому так
-            System.out.println(e.getMessage());
+
+        } catch (IOException | ManagerSaveException e) { // не понял что от меня хотят в тз, поэтому так
+            e.printStackTrace();
         }
     }
 
     public String taskToString() { // метод собирает все таски и историю, записывает в стрингбилдер и передает в save()
-        String type = "";
+        String type = Types.TASK.toString();
         List<Task> allTasks = new ArrayList<>();
         allTasks.addAll(epicData.values());
         allTasks.addAll(taskData.values());
@@ -112,11 +134,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         sb.append("id,type,name,status,description,epic" + "\n");
         for (Task task : allTasks) {
             if (task.getId() < 20) {
-                type = "TASK";
+                type = Types.TASK.toString();
             } else if (task.getId() < 30) {
-                type = "EPIC";
+                type = Types.EPIC.toString();
             } else {
-                type = "SUBTASK";
+                type = Types.SUBTASK.toString();
             }
             if (type.equals("SUBTASK")) {
                 SubTask sub = (SubTask) task;
@@ -239,5 +261,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     }
                 }
             }
+        System.out.println(manager.getHistory());
+        System.out.println(manager.getTaskById(10));
     }
 }

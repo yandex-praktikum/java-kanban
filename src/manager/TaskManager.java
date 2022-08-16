@@ -1,8 +1,8 @@
-package Manager;
+package manager;
 
-import Task.Task;
-import Task.SubTask;
-import Task.Epic;
+import task.Task;
+import task.SubTask;
+import task.Epic;
 
 import java.io.IOException;
 import java.util.List;
