@@ -6,33 +6,28 @@ import java.util.*;
 
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
-    static File file = new File("history.csv");
-    final String filename = "history.csv";
-    /* Привет, ревьюер! Вернулся из отпуска и пытаюсь наверстать упущенное, поторопился и добавил исключение в try
-     без условий :) Исправил, но не уверен чего от меня хотели в тз, буду рад коментариям.
-     В остальном всё восстановилось, всё вызывается, csv перезаписался, единственный момент, что история в csv
-     перезаписалась зеркально, но порядок вызова сохранился. Надеюсь это не проблема :)
-
-     Еще один момент, если есть замечания, то лучше писать их как замечания в коде, а не в основной коментарий,
-     в прошлый раз я его не развернул и увидел только после того, как отправил работу на вторую проверку.
-
-    * По двум замечаниям есть вопросы:
+    public static File file = new File("history.csv");
+    /* И снова здравствуйте! :)
+    *  1. Поправил toString(возможно немного перестарался :D ).
+    *  2. Добавил вызов и принт истории и всех соозданных задач в новом классе.
     *
-    * 1. Почему file static - потому, что если его сделать не статическим, то возникает такая проблема:
-    *  "Non-static field 'file' cannot be referenced from a static context"
-    *  Метод loadFromFile() должен быть статическим, мейн соответственно тоже, вопрос: как тут сделать поле file
-    *  не статическим и им польоваться в статик методах? Я не придумал.
-    *
-    * 2. Почему типы задач у меня String, а не enum - потому, что мне удобней было присваивать тип сразу в String
-    *  и записывать это в csv. Всё равно же придется делать enum.toString() чтобы записать в csv. Ок, я добавлю enum,
-    *  но можно пояснение, какие преимущества это даёт по сравнению с моим решением?
-    *  */
+    *  3. Пытаюсь разобраться со static File и пока не могу понять, как обойтись без него в полях если:
+    *   при создании нового менеджера return new FileBackedTasksManager(new File("history.csv"));
+    *   в него передаётся файл, в котором хранится история и в метод loadFromFile(File file) передаётся этот файл.
+    *   Тут скорей filename в полях не нужен если его всегда можно узнать через .getName()
+    *   А что передавать в loadFromFile если file в полях не будет храниться?
+    *   Например если я в классе Main захочу запустить FileBackedTasksManager откуда мне в loadFromFile передать файл ?
+    *   Я вижу это только так:
+    *   FileBackedTasksManager manager = Managers.getDefaultBacked();
+    *   FileBackedTasksManager.loadFromFile(FileBackedTasksManager.file);
+    *   Может чего-то не улавливаю, буду рад пояснениям. Спасибо за ревью! :)
+    *   */
 
     public FileBackedTasksManager(File file) {
         this.file = file;
     }
 
-    public static void main(String[] args) {
+   public static void main(String[] args) {
         loadFromFile(file);
         /*FileBackedTasksManager manager = Managers.getDefaultBacked();
         Task task = new Task("Погулять", 0, "Оделся и пошёл", Status.NEW);
@@ -113,8 +108,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public void save() { // метод записывает таски и историю в csv
-        try (FileWriter fileWriter = new FileWriter(filename, false)) {
-            if (filename.isEmpty()) {
+        try (FileWriter fileWriter = new FileWriter(file.getName(), false)) {
+            if (file.getName().isEmpty()) {
                 throw new ManagerSaveException("Имя файла пустое.");
             }
             fileWriter.write(taskToString());
@@ -215,7 +210,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return history;
     }
 
-    static void loadFromFile(File file) { // метод создаёт новый менеджер из файла
+    public static void loadFromFile(File file) { // метод создаёт новый менеджер из файла
         List<Task> tasksFromString = new ArrayList<>();
         List<String> allLines = new ArrayList<>();
 
@@ -263,5 +258,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             }
         System.out.println(manager.getHistory());
         System.out.println(manager.getTaskById(10));
+        System.out.println(manager.getTaskById(11));
+        System.out.println(manager.getEpicById(20));
+        System.out.println(manager.getSubTaskById(30));
+        System.out.println(manager.getSubTaskById(31));
+        System.out.println(manager.getSubTaskById(32));
     }
 }

@@ -6,4 +6,4 @@ id,type,name,status,description,epic
 30,SUBTASK,Салатик,NEW,Режем и заправляем,20
 31,SUBTASK,Котлетки,NEW,Жарим,20
                                                                                 
-10,32,31,30,20,11,
+32,31,30,20,11,10,

@@ -49,12 +49,11 @@ public class Task { // класс родитель
 
     @Override
     public String toString() {
-        return "Task{" +
-                "name='" + name + '\'' +
-                ", id=" + id +
-                ", description='" + description + '\'' +
-                ", status='" + status + '\'' +
-                '}';
+        return "{Type: Task" +
+                ", name: " + name +
+                ", id: " + id +
+                ", description: " + description +
+                ", status: " + status + "}";
     }
 
     @Override

@@ -15,13 +15,12 @@ public class SubTask extends Task { //добавил параметр для с�
 
     @Override
     public String toString() {
-        return "SubTask{" +
-                ", name='" + name + '\'' +
-                ", id=" + id +
-                ", description='" + description + '\'' +
-                ", status='" + status + '\'' +
-                "epicId=" + epicId +
-                '}';
+        return "{Type: SubTask" +
+                ", name: " + name +
+                ", id: " + id +
+                ", description: " + description +
+                ", status: " + status +
+                ", epicId: " + epicId + "}";
     }
 
     @Override
