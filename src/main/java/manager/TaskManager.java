@@ -5,6 +5,7 @@ import task.SubTask;
 import task.Epic;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TaskManager {
@@ -47,6 +48,9 @@ public interface TaskManager {
     List<SubTask> getEpicSubTasks(int epicId);
 
     void findEpicStatus(int epicId);
+    void findEpicTime(int epicId);
+    List<Task> getPrioritizedTasks();
+    void checkTaskDate(LocalDateTime dateTime);
 
     List<Task> getHistory();
 

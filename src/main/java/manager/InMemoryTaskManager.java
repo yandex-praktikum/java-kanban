@@ -5,11 +5,11 @@ import task.SubTask;
 import task.Task;
 import task.Status;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class InMemoryTaskManager implements TaskManager {
@@ -21,8 +21,10 @@ public class InMemoryTaskManager implements TaskManager {
     protected final Map<Integer, SubTask> subTaskData = new HashMap<>();
     protected final HistoryManager historyManager = Managers.getDefaultHistory();
 
+    protected final List<LocalDateTime> allDates = new ArrayList<>();
+
     @Override
-    public int addNewTask(Task task) throws IOException { // добавляет задачу в мапу
+    public int addNewTask(Task task) { // добавляет задачу в мапу
         task.setId(taskId++);
         taskData.put(task.getId(), task);
         return task.getId();
@@ -88,6 +90,7 @@ public class InMemoryTaskManager implements TaskManager {
         for (int id : epicData.keySet()) {
             epicData.get(id).deleteSubTaskIds();// чистит списки айди в эпиках
             epicData.get(id).setStatus(Status.NEW);// обновляет статус эпика
+            findEpicTime(id);
         }
 
     }
@@ -113,11 +116,12 @@ public class InMemoryTaskManager implements TaskManager {
         historyManager.remove(id);
         subTaskData.remove(id);
         epicData.get(epicId).deleteSubTaskFromList(id);
+        findEpicTime(epicId);
         findEpicStatus(epicId);
     }
 
     @Override
-    public void deleteEpicById(Integer id) throws IOException { // удаляет задачу из мапы по id
+    public void deleteEpicById(Integer id) { // удаляет задачу из мапы по id
         for (Integer subId : getEpicById(id).getSubTaskIds()) { // и чистит мапу сабтасков по эпикАйди
             subTaskData.remove(subId);
             historyManager.remove(subId);
@@ -125,6 +129,7 @@ public class InMemoryTaskManager implements TaskManager {
         historyManager.remove(id);
         epicData.remove(id);
     }
+
 
     @Override
     public void updateTask(Task task) { // перезаписывает task под тем же id
@@ -137,6 +142,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (subTaskData.get(subTask.getId()) != null && !subTaskData.get(subTask.getId())
                 .getStatus().equals(subTask.getStatus())) { // если не null и статус изменился
             subTaskData.put(subTask.getId(), subTask); // заменили сабтаск
+            findEpicTime(subTask.getEpicId()); // пересчитали время эпика
             findEpicStatus(subTaskData.get(subTask.getId()).getEpicId()); // и пересчитали статус эпика
             return;
         }
@@ -173,6 +179,51 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
         return epicSubTasks;
+    }
+    @Override
+    public List<Task> getPrioritizedTasks() { // возвращает лист отсортированных тасок
+        List<Task> unsortedTasks = new ArrayList<>();
+        unsortedTasks.addAll(subTaskData.values());
+        unsortedTasks.addAll(taskData.values());
+        unsortedTasks.addAll(epicData.values());
+        unsortedTasks.sort(Comparator.comparing(Task::getStartTime));
+        return unsortedTasks;
+    }
+    @Override
+    public void checkTaskDate(LocalDateTime dateTime) { // проверка на совпадение времени тасок
+        try {
+            if (allDates.contains(LocalDateTime.of(dateTime.getYear(), dateTime.getMonthValue(),
+                    dateTime.getDayOfMonth(), dateTime.getHour(), 0, 0))) {
+                throw new IllegalArgumentException("Задача с таким временем уже существует." + dateTime);
+            }
+            allDates.add(LocalDateTime.of(dateTime.getYear(), dateTime.getMonthValue(),
+                    dateTime.getDayOfMonth(), dateTime.getHour(), 0, 0));
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            System.exit(1); // простите :D
+        }
+    }
+
+    @Override
+    public void findEpicTime(int epicId) { // ищет время начала, продолжительности и конца эпика
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yy");
+
+        List<LocalDateTime> subStartTimes = getEpicSubTasks(epicId).stream()
+                .map(Task::getStartTime).sorted(LocalDateTime::compareTo)
+                .collect(Collectors.toCollection(ArrayList::new));
+        getEpicById(epicId).setStartTime(subStartTimes.get(0));
+
+        List<LocalDateTime> subEndTimes = getEpicSubTasks(epicId).stream()
+                .map(Task::getEndTime)
+                .map(sd -> LocalDateTime.parse(sd, formatter)).sorted(LocalDateTime::compareTo)
+                .collect(Collectors.toCollection(ArrayList::new));
+        getEpicById(epicId).setEndTime(subEndTimes.get(subEndTimes.size() - 1));
+
+        Duration epicDuration = Duration.ofNanos(0);
+        for (int id : epicData.get(epicId).getSubTaskIds()){
+            epicDuration = epicDuration.plus(subTaskData.get(id).getDuration());
+        }
+        getEpicById(epicId).setDuration(epicDuration);
     }
 
     @Override

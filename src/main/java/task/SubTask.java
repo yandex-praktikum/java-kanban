@@ -1,16 +1,26 @@
 package task;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class SubTask extends Task { //добавил параметр для связи с эпиком
     private final Integer epicId;
-    public SubTask(String name, Integer id, String description, Status status, Integer epicId) {
-        super(name, id, description, status);
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yy");
+    public SubTask(String name, Integer id, String description, Status status, Integer epicId,
+                   Duration duration, LocalDateTime startTime) {
+        super(name, id, description, status, duration, startTime);
         this.epicId = epicId;
     }
 
     public Integer getEpicId() {
         return epicId;
+    }
+
+    public String getEndTime() {
+        LocalDateTime endTime = LocalDateTime.from(startTime).plus(duration);
+        return endTime.format(formatter);
     }
 
     @Override
@@ -20,7 +30,10 @@ public class SubTask extends Task { //добавил параметр для с�
                 ", id: " + id +
                 ", description: " + description +
                 ", status: " + status +
-                ", epicId: " + epicId + "}";
+                ", epicId: " + epicId +
+                ", duration: " + duration +
+                ", startTime: " + startTime.format(formatter) +
+                ", endTime: " + getEndTime() +"}";
     }
 
     @Override

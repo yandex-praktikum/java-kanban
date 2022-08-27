@@ -1,14 +1,26 @@
 package task;
 
-
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+
 public class Epic extends Task {
     private List<Integer> subTaskIds = new ArrayList<>();
-    public Epic(String name, Integer id, String description) {
-        super(name, id, description, Status.NEW);
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yy");
+
+    LocalDateTime endTime; // время окончания самой поздней сабтаски
+    public Epic(String name, Integer id, String description, Duration duration,
+                LocalDateTime startTime, LocalDateTime endTime) {
+
+        super(name, id, description, Status.NEW, duration, startTime);
+        this.endTime = endTime;
+    }
+    public String getEndTime() {
+        return endTime.format(formatter);
     }
     public void deleteSubTaskIds() { // очистить список айди сабтасков
        subTaskIds.clear();
@@ -33,6 +45,17 @@ public class Epic extends Task {
     public void setSubTaskIds(List<Integer> subTaskIds) {
         this.subTaskIds = subTaskIds;
     }
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
 
     @Override
     public String toString() {
@@ -41,7 +64,10 @@ public class Epic extends Task {
                 ", id: " + id +
                 ", description: " + description +
                 ", status: " + status +
-                ", subTaskIds: " + subTaskIds + "}";
+                ", subTaskIds: " + subTaskIds +
+                ", duration: " + duration +
+                ", startTime: " + startTime.format(formatter) +
+                ", endTime: " + endTime.format(formatter) + "}";
     }
 
     @Override
