@@ -133,12 +133,14 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateTask(Task task) { // перезаписывает task под тем же id
+        checkTaskDate(task.getStartTime());
         if (taskData.get(task.getId()) != null)
             taskData.put(task.getId(), task);
     }
 
     @Override
     public void updateSubTask(SubTask subTask) { // перезаписывает subTask под тем же id
+        checkTaskDate(subTask.getStartTime());
         if (subTaskData.get(subTask.getId()) != null && !subTaskData.get(subTask.getId())
                 .getStatus().equals(subTask.getStatus())) { // если не null и статус изменился
             subTaskData.put(subTask.getId(), subTask); // заменили сабтаск

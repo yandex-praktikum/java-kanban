@@ -6,7 +6,7 @@ import task.Epic;
 import task.Status;
 import task.SubTask;
 import task.Task;
-
+import com.google.gson.Gson;
 import java.io.File;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 class  FileBackedTasksManagerTest {
+    Gson gson = new Gson(); // для api
 
     File file = new File("historyTest.csv");
     FileBackedTasksManager manager = new FileBackedTasksManager(file);
