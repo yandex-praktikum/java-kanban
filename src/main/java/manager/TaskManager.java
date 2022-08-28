@@ -50,7 +50,7 @@ public interface TaskManager {
     void findEpicStatus(int epicId);
     void findEpicTime(int epicId);
     List<Task> getPrioritizedTasks();
-    void checkTaskDate(LocalDateTime dateTime);
+    void checkTaskDate(LocalDateTime dateTime) throws IllegalArgumentException;
 
     List<Task> getHistory();
 

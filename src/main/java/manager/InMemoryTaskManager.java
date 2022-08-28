@@ -191,22 +191,21 @@ public class InMemoryTaskManager implements TaskManager {
     }
     @Override
     public void checkTaskDate(LocalDateTime dateTime) { // проверка на совпадение времени тасок
-        try {
             if (allDates.contains(LocalDateTime.of(dateTime.getYear(), dateTime.getMonthValue(),
-                    dateTime.getDayOfMonth(), dateTime.getHour(), 0, 0))) {
+                    dateTime.getDayOfMonth(), dateTime.getHour(), 0, 0)))
                 throw new IllegalArgumentException("Задача с таким временем уже существует." + dateTime);
-            }
+
             allDates.add(LocalDateTime.of(dateTime.getYear(), dateTime.getMonthValue(),
                     dateTime.getDayOfMonth(), dateTime.getHour(), 0, 0));
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-            System.exit(1); // простите :D
-        }
     }
 
     @Override
     public void findEpicTime(int epicId) { // ищет время начала, продолжительности и конца эпика
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yy");
+        if(getEpicSubTasks(epicId).isEmpty()) {
+            getEpicById(epicId).setDuration(Duration.ofNanos(0));
+            return;
+        }
 
         List<LocalDateTime> subStartTimes = getEpicSubTasks(epicId).stream()
                 .map(Task::getStartTime).sorted(LocalDateTime::compareTo)

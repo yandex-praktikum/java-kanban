@@ -11,6 +11,7 @@ import java.util.*;
 public class FileBackedTasksManager extends InMemoryTaskManager {
     public static File file = new File("history.csv");
 
+
     public FileBackedTasksManager(File file) {
         this.file = file;
     }
@@ -175,9 +176,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             duration = Duration.parse(stringTask.get(6));
             startTime = LocalDateTime.parse(stringTask.get(7).trim());
         } else {
-            duration = Duration.parse(stringTask.get(8));
-            startTime = LocalDateTime.parse(stringTask.get(9));
-            endTime = LocalDateTime.parse(stringTask.get(10), formatter);
+            int size = stringTask.size();
+            duration = Duration.parse(stringTask.get(size - 3));
+            startTime = LocalDateTime.parse(stringTask.get(size - 2));
+            endTime = LocalDateTime.parse(stringTask.get(size - 1), formatter);
         }
 
         if (stringTask.get(1).equals("TASK")) {
@@ -219,6 +221,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     static List<Integer> historyFromString(String value) { // метод разбивает строку с историей на инты
+
         List<String> values = List.of(value.split(","));
         List<Integer> history = new ArrayList<>();
         for (String val : values) {
@@ -227,58 +230,71 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return history;
     }
 
-    public static void loadFromFile(File file) { // метод создаёт новый менеджер из файла
-        List<Task> tasksFromString = new ArrayList<>();
-        List<String> allLines = new ArrayList<>();
+    public static FileBackedTasksManager loadFromFile(File file) { // метод создаёт новый менеджер из файла
 
-        FileBackedTasksManager manager = Managers.getDefaultBacked();
-        HistoryManager historyManager = Managers.getDefaultHistory();
+            if (!file.isFile())
+                throw new IllegalArgumentException("Файл не найден");
 
-        try (FileReader reader = new FileReader(file.getName())) {
-            BufferedReader br = new BufferedReader(reader);
-            while (br.ready()) {
-                String line = br.readLine();
-                allLines.add(line);
+            List<Task> tasksFromString = new ArrayList<>();
+            List<String> allLines = new ArrayList<>();
+
+            FileBackedTasksManager manager = Managers.getDefaultBacked();
+            HistoryManager historyManager = Managers.getDefaultHistory();
+
+            try (FileReader reader = new FileReader(file.getName())) {
+                BufferedReader br = new BufferedReader(reader);
+                while (br.ready()) {
+                    String line = br.readLine();
+                    allLines.add(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch(IOException e){
-            e.printStackTrace();
-        }
-
-        for (int i = 1; i < allLines.size() - 2; i++) {
-            tasksFromString.add(manager.fromString(allLines.get(i)));
-        }
-
-        for (Task task : tasksFromString) {
-            if (task.getId() < 20) {
-                manager.addNewTask(task);
-            } else if (task.getId() < 30) {
-                manager.addNewEpic((Epic) task);
-            } else if (task.getId() > 29){
-                manager.addNewSubTask((SubTask) task);
+            if (allLines.get(allLines.size() - 1).isBlank()) {
+                for (int i = 1; i < allLines.size() - 1; i++) {
+                    tasksFromString.add(manager.fromString(allLines.get(i)));
+                }
+            } else {
+                for (int i = 1; i < allLines.size() - 2; i++) {
+                    tasksFromString.add(manager.fromString(allLines.get(i)));
+                }
             }
-        }
 
-        String history = allLines.get(allLines.size() - 1);
-
-        for (Integer id : historyFromString(history)) {
             for (Task task : tasksFromString) {
-                if (task.getId() == id) {
-                    if (id > 29) {
-                        historyManager.add(manager.getSubTaskById(id));
-                    } else if (id < 20) {
-                        historyManager.add(manager.getTaskById(id));
-                    } else {
-                        historyManager.add(manager.getEpicById(id));
+                if (task.getId() < 20) {
+                    manager.addNewTask(task);
+                } else if (task.getId() < 30) {
+                    manager.addNewEpic((Epic) task);
+                } else if (task.getId() > 29) {
+                    manager.addNewSubTask((SubTask) task);
+                }
+            }
+
+            String history = allLines.get(allLines.size() - 1);
+            if (!history.isBlank()) {
+                for (Integer id : historyFromString(history)) {
+                    for (Task task : tasksFromString) {
+                        if (task.getId().equals(id)) {
+                            if (id > 29) {
+                                historyManager.add(manager.getSubTaskById(id));
+                            } else if (id < 20) {
+                                historyManager.add(manager.getTaskById(id));
+                            } else {
+                                historyManager.add(manager.getEpicById(id));
+                            }
+                        }
                     }
                 }
             }
-        }
+        /*System.out.println(manager.getTaskById(10));
         System.out.println(manager.getHistory());
         System.out.println(manager.getTaskById(10));
         System.out.println(manager.getTaskById(11));
         System.out.println(manager.getEpicById(20));
         System.out.println(manager.getSubTaskById(30));
         System.out.println(manager.getSubTaskById(31));
-        System.out.println(manager.getSubTaskById(32));
+        System.out.println(manager.getSubTaskById(32));*/
+            return manager;
+
     }
 }
