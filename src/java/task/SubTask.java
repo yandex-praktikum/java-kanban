@@ -2,12 +2,10 @@ package task;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class SubTask extends Task { //добавил параметр для связи с эпиком
     private final Integer epicId;
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yy");
     public SubTask(String name, Integer id, String description, Status status, Integer epicId,
                    Duration duration, LocalDateTime startTime) {
         super(name, id, description, status, duration, startTime);

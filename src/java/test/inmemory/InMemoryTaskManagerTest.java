@@ -1,32 +1,27 @@
-package test.filebacked;
+package test.inmemory;
 
-import manager.FileBackedTasksManager;
+import manager.InMemoryTaskManager;
 import org.junit.jupiter.api.Test;
 import task.Epic;
 import task.Status;
 import task.SubTask;
 import task.Task;
-import com.google.gson.Gson;
-import java.io.File;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.TreeSet;
 
 import static org.junit.jupiter.api.Assertions.*;
+class InMemoryTaskManagerTest {
 
-
-class  FileBackedTasksManagerTest {
-    Gson gson = new Gson(); // для api
-
-    File file = new File("historyTest.csv");
-    FileBackedTasksManager manager = new FileBackedTasksManager(file);
+    InMemoryTaskManager manager = new InMemoryTaskManager();
     LocalDateTime dateTime = LocalDateTime.of(2022, 8, 26,
             12, 0, 0);
 
     @Test
     void addNewTask() { // проверка создания, добавления, удаления и изменения таски
-        Task task = new Task("Погулять", 1, "Оделся и пошёл",Status.NEW,
+        Task task = new Task("Погулять", 1, "Оделся и пошёл", Status.NEW,
                 Duration.ofHours(1), dateTime);
 
         final int id = manager.addNewTask(task);
@@ -42,6 +37,7 @@ class  FileBackedTasksManagerTest {
         manager.deleteAllTasks();
         assertTrue(manager.getTask().isEmpty(), "Таски не удаляются");
     }
+
 
     @Test
     void addNewEpic() { // проверка создания, добавления и удаления эпика
@@ -77,7 +73,7 @@ class  FileBackedTasksManagerTest {
         assertNotNull(subs, "Задачи на возвращаются");
         assertEquals(subtask, subs.get(0), "Задачи не совпадают");
         assertEquals(id, subtask.getId(), "Айди сохраняется некорректно");
-        manager.findEpicTime(subtask.getEpicId());
+        manager.epicTimeCalculation(subtask.getEpicId());
         assertEquals(epic.getDuration(), subtask.getDuration(), "Продолжительность эпика не меняется");
         assertEquals(epic.getId(), subtask.getEpicId(), "Айди эпика не присвоен сабтаске");
         subtask.setName("Протестировать");
@@ -91,14 +87,14 @@ class  FileBackedTasksManagerTest {
         manager.addNewSubTask(subtask1);
         assertEquals(epic.getStatus(), Status.NEW, "Статус эпика не пересчитывается"); //все NEW
         subtask.setStatus(Status.DONE);
-        manager.findEpicStatus(subtask.getEpicId());
+        manager.epicStatusCalculation(subtask.getEpicId());
         assertEquals(epic.getStatus(), Status.IN_PROGRESS, "Статус эпика не пересчитывается");// 1 NEW 1 DONE
         subtask1.setStatus(Status.DONE);
-        manager.findEpicStatus(subtask.getEpicId());
+        manager.epicStatusCalculation(subtask.getEpicId());
         assertEquals(epic.getStatus(), Status.DONE, "Статус эпика не пересчитывается");// все DONE
         subtask1.setStatus(Status.IN_PROGRESS);
         subtask.setStatus(Status.IN_PROGRESS);
-        manager.findEpicStatus(subtask.getEpicId());
+        manager.epicStatusCalculation(subtask.getEpicId());
         assertEquals(epic.getStatus(), Status.IN_PROGRESS, "Статус эпика не пересчитывается");//все IN_PROGRESS
         manager.deleteAllSubTasks();
         assertTrue(manager.getSubTask().isEmpty(), "Сабтаски не удаляются");
@@ -116,15 +112,16 @@ class  FileBackedTasksManagerTest {
                 epic.getId(), Duration.ofHours(1), dateTime.minusHours(2));
         manager.addNewTask(task);
         manager.addNewSubTask(subtask);
-        List<Task> prioritized = manager.getPrioritizedTasks();
+        TreeSet<Task> prioritized = manager.getPrioritizedTasks();
+        Task firstTask = prioritized.first();
+        Task lastTask = prioritized.last();
 
-        manager.getPrioritizedTasks();
-        assertEquals(prioritized.get(2), task, "Таски не отсортированы по времени");
-        assertEquals(prioritized.get(1), epic, "Таски не отсортированы по времени");
-        assertEquals(prioritized.get(0), subtask, "Таски не отсортированы по времени");
-
+        assertEquals(lastTask, task, "Таски не отсортированы по времени");
+        assertEquals(3, prioritized.size(), "Таски не отсортированы по времени"); // в середине есть
+        assertEquals(firstTask, subtask, "Таски не отсортированы по времени");
 
     }
+
     @Test
     void taskTimeExceptionCheck() { // проверка пересечений дат
         Task task = new Task("Погулять", 1, "Оделся и пошёл",Status.NEW,
@@ -137,74 +134,6 @@ class  FileBackedTasksManagerTest {
                 () -> manager.addNewTask(task1)
         );
         assertEquals("Задача с таким временем уже существует." + dateTime, exception.getMessage());
-
     }
 
-    @Test
-    void historySaveAndPrintCheck() { // проверка истории
-        Task task = new Task("Погулять", 1, "Оделся и пошёл",Status.NEW,
-                Duration.ofHours(1), dateTime);
-        Epic epic = new Epic("Обед", 10, "Котлетки с пюрешкой и салатиком",
-                Duration.ofHours(0), dateTime.minusHours(1), dateTime.minusHours(9));
-        manager.addNewEpic(epic);
-        SubTask subtask = new SubTask("Котлетки", 100, "Жарим", Status.NEW,
-                epic.getId(), Duration.ofHours(1), dateTime.minusHours(2));
-        manager.addNewTask(task);
-        manager.addNewSubTask(subtask);
-
-        manager.getSubTaskById(subtask.getId());
-        manager.getTaskById(task.getId());
-        manager.getEpicById(epic.getId());
-
-        LinkedList<Task> tasks = new LinkedList<>();
-
-        tasks.add(epic);
-        tasks.add(task);
-        tasks.add(subtask);
-        assertNotNull(manager.getHistory(), "История не сохраняется");
-        assertEquals(tasks, manager.getHistory(), "Порядок вызовов не сохраняется");
-
-        manager.deleteSubTaskById(subtask.getId());
-        tasks.remove(subtask); // удалил с конца
-        assertEquals(tasks, manager.getHistory(), "Порядок вызовов не сохраняется");
-
-
-        manager.deleteTaskById(task.getId()); // удалил из середины
-        tasks.remove(task);
-        assertEquals(tasks, manager.getHistory(), "Порядок вызовов не сохраняется");
-
-
-    }
-
-
-    @Test
-    void loadFromCSVCheck() {
-        Task task = new Task("Погулять", 1, "Оделся и пошёл",Status.NEW,
-                Duration.ofHours(1), dateTime);
-        Task task1 = new Task("Погулять", 1, "Оделся и пошёл",Status.NEW,
-                Duration.ofHours(1), dateTime.minusHours(1));
-        Epic epic = new Epic("Обед", 10, "Котлетки с пюрешкой и салатиком",
-                Duration.ofHours(0), dateTime.minusHours(1), dateTime.minusHours(9));
-        File testFile = new File("test.csv");
-
-
-        final IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> FileBackedTasksManager.loadFromFile(testFile)
-        );
-
-        assertEquals("Файл не найден", exception.getMessage()); // пустой файл
-
-        manager.addNewTask(task1);
-        manager.addNewTask(task);
-        manager.addNewEpic(epic); // эпик без сабтасок
-
-        FileBackedTasksManager newManager = FileBackedTasksManager.loadFromFile(file);
-        assertEquals(manager.getTask(), newManager.getTask(), "Список задач не совпадает"); //файл без истории
-
-        manager.getTaskById(task.getId());
-        manager.getTaskById(task1.getId());
-        newManager = FileBackedTasksManager.loadFromFile(file);
-        assertNotNull(newManager.getHistory(), "История не восстановлена"); //файл с историей
-    }
 }

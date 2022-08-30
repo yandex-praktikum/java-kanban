@@ -7,9 +7,10 @@ import task.Status;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static task.Task.formatter;
 
 
 public class InMemoryTaskManager implements TaskManager {
@@ -21,10 +22,12 @@ public class InMemoryTaskManager implements TaskManager {
     protected final Map<Integer, SubTask> subTaskData = new HashMap<>();
     protected final HistoryManager historyManager = Managers.getDefaultHistory();
 
-    protected final List<LocalDateTime> allDates = new ArrayList<>();
+    protected final List<LocalDateTime> datesValidator = new ArrayList<>();
+    protected final TreeSet<Task> sortedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
 
     @Override
     public int addNewTask(Task task) { // добавляет задачу в мапу
+        taskDateValidation(task.getStartTime());
         task.setId(taskId++);
         taskData.put(task.getId(), task);
         return task.getId();
@@ -39,10 +42,11 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public int addNewSubTask(SubTask subTask) { // добавляет задачу в мапу и её айди в лист эпика
+        taskDateValidation(subTask.getStartTime());
         subTask.setId(subTaskId++);
         subTaskData.put(subTask.getId(), subTask);
         epicData.get(subTask.getEpicId()).addSubTaskIds(subTask.getId());
-        findEpicStatus(subTask.getEpicId()); // пересчитал статус эпика
+        epicStatusCalculation(subTask.getEpicId()); // пересчитал статус эпика
         return subTask.getId();
     }
 
@@ -90,7 +94,7 @@ public class InMemoryTaskManager implements TaskManager {
         for (int id : epicData.keySet()) {
             epicData.get(id).deleteSubTaskIds();// чистит списки айди в эпиках
             epicData.get(id).setStatus(Status.NEW);// обновляет статус эпика
-            findEpicTime(id);
+            epicTimeCalculation(id);
         }
 
     }
@@ -116,8 +120,8 @@ public class InMemoryTaskManager implements TaskManager {
         historyManager.remove(id);
         subTaskData.remove(id);
         epicData.get(epicId).deleteSubTaskFromList(id);
-        findEpicTime(epicId);
-        findEpicStatus(epicId);
+        epicTimeCalculation(epicId);
+        epicStatusCalculation(epicId);
     }
 
     @Override
@@ -133,19 +137,23 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateTask(Task task) { // перезаписывает task под тем же id
-        checkTaskDate(task.getStartTime());
+        sortedTasks.remove(task);
+        datesValidator.remove(task.getStartTime());
+        taskDateValidation(task.getStartTime());
         if (taskData.get(task.getId()) != null)
             taskData.put(task.getId(), task);
     }
 
     @Override
     public void updateSubTask(SubTask subTask) { // перезаписывает subTask под тем же id
-        checkTaskDate(subTask.getStartTime());
+        sortedTasks.remove(subTask);
+        datesValidator.remove(subTask.getStartTime());
+        taskDateValidation(subTask.getStartTime());
         if (subTaskData.get(subTask.getId()) != null && !subTaskData.get(subTask.getId())
                 .getStatus().equals(subTask.getStatus())) { // если не null и статус изменился
             subTaskData.put(subTask.getId(), subTask); // заменили сабтаск
-            findEpicTime(subTask.getEpicId()); // пересчитали время эпика
-            findEpicStatus(subTaskData.get(subTask.getId()).getEpicId()); // и пересчитали статус эпика
+            epicTimeCalculation(subTask.getEpicId()); // пересчитали время эпика
+            epicStatusCalculation(subTaskData.get(subTask.getId()).getEpicId()); // и пересчитали статус эпика
             return;
         }
             subTaskData.put(subTask.getId(), subTask); // если статус не изменился, только заменили сабтаск
@@ -183,27 +191,24 @@ public class InMemoryTaskManager implements TaskManager {
         return epicSubTasks;
     }
     @Override
-    public List<Task> getPrioritizedTasks() { // возвращает лист отсортированных тасок
-        List<Task> unsortedTasks = new ArrayList<>();
-        unsortedTasks.addAll(subTaskData.values());
-        unsortedTasks.addAll(taskData.values());
-        unsortedTasks.addAll(epicData.values());
-        unsortedTasks.sort(Comparator.comparing(Task::getStartTime));
-        return unsortedTasks;
+    public TreeSet<Task> getPrioritizedTasks() { // возвращает лист отсортированных тасок
+        sortedTasks.addAll(subTaskData.values());
+        sortedTasks.addAll(taskData.values());
+        sortedTasks.addAll(epicData.values());
+        return sortedTasks;
     }
     @Override
-    public void checkTaskDate(LocalDateTime dateTime) { // проверка на совпадение времени тасок
-            if (allDates.contains(LocalDateTime.of(dateTime.getYear(), dateTime.getMonthValue(),
+    public void taskDateValidation(LocalDateTime dateTime) { // проверка на совпадение времени тасок
+            if (datesValidator.contains(LocalDateTime.of(dateTime.getYear(), dateTime.getMonthValue(),
                     dateTime.getDayOfMonth(), dateTime.getHour(), 0, 0)))
                 throw new IllegalArgumentException("Задача с таким временем уже существует." + dateTime);
 
-            allDates.add(LocalDateTime.of(dateTime.getYear(), dateTime.getMonthValue(),
+            datesValidator.add(LocalDateTime.of(dateTime.getYear(), dateTime.getMonthValue(),
                     dateTime.getDayOfMonth(), dateTime.getHour(), 0, 0));
     }
 
     @Override
-    public void findEpicTime(int epicId) { // ищет время начала, продолжительности и конца эпика
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yy");
+    public void epicTimeCalculation(int epicId) { // ищет время начала, продолжительности и конца эпика
         if(getEpicSubTasks(epicId).isEmpty()) {
             getEpicById(epicId).setDuration(Duration.ofNanos(0));
             return;
@@ -228,7 +233,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void findEpicStatus(int epicId) { // вычисляет статус эпика
+    public void epicStatusCalculation(int epicId) { // вычисляет статус эпика
         List<Status> statusList = new ArrayList<>();
         for (Integer id : epicData.get(epicId).getSubTaskIds()) {
             statusList.add(subTaskData.get(id).getStatus());

@@ -7,6 +7,7 @@ import task.Epic;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.TreeSet;
 
 public interface TaskManager {
     int addNewTask(Task task) throws ManagerSaveException, IOException;
@@ -47,10 +48,10 @@ public interface TaskManager {
 
     List<SubTask> getEpicSubTasks(int epicId);
 
-    void findEpicStatus(int epicId);
-    void findEpicTime(int epicId);
-    List<Task> getPrioritizedTasks();
-    void checkTaskDate(LocalDateTime dateTime) throws IllegalArgumentException;
+    void epicStatusCalculation(int epicId);
+    void epicTimeCalculation(int epicId);
+    TreeSet<Task> getPrioritizedTasks();
+    void taskDateValidation(LocalDateTime dateTime) throws IllegalArgumentException;
 
     List<Task> getHistory();
 

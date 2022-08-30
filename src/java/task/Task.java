@@ -12,7 +12,7 @@ public class Task { // класс родитель
     protected Status status; // enum статусов
     protected Duration duration; // продолжительность таски
     protected LocalDateTime startTime; // дата старта
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yy");
+    public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yy");
 
     public Task(String name, Integer id, String description,
                 Status status, Duration duration, LocalDateTime startTime) {

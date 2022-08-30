@@ -4,9 +4,42 @@ import task.*;
 import java.io.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import static task.Task.formatter;
+/*Привет, ревьюер! Вот мои комментарии к комментариям с комментариями к комментариям(очень многа букав)
+
+* 1. Не понял комментарий про логи: При запуске main в FileBackedTasksManager в логах вижу "нечто".
+* Я запустил main в FileBackedTasksManager и увидел тоже, что и в прошлый раз + добавлены времена и продолжительность.
+* Может быть разный run config даёт разный результат, надеюсь в следующей итерации ты увидишь тоже, что и я :)
+*
+* 2. По поводу formatter согласен, его было много, оставил один экземпляр public static в классе Task и импортировал.
+* Возможно есть решение адекватней, если что исправлю.
+*
+* 3. Про папку тест и структуру проекта в целом: всё лежит в папке java, за её пределами всё превращается в тыкву :)
+* И Main и FileBackedTasksManager и все классы с тасками и тесты. Возможно это из за подключения к проекту maven.
+* У меня единственная рабочая библиотека с тестами как раз из maven и на то, чтобы эти тесты запустить у меня ушло
+* 3 дня. Полностью менять структуру проекта и тратить еще х дней на очередную попытку подключить junit я сейчас не могу
+* и не хочу-не буду, тем более, что в обучении этому уделён один абзац(он не сработал), а самостоятельно это долго.
+* Скоро жесткий дедлайн и уже нужно делать 8 тз, поэтому представим, что java это src и всё лежит на одном уровне.
+* P.S. Проект на ревью сдал сырой как раз потому, что половину времени съели процессы, не связанные с написанием кода.
+* P.P.S. Ещё и кода нового на 300 строк в этом тз, жуть! Тайм менеджмент вышел из чата.
+*
+* 4. Названия методов поменял.
+*
+* 5. Логику из метода getPrioritizedTask передал в TreeSet, метод теперь только возвращает список.
+*
+* 6. Перед отправкой на ревью все тесты проходили, но видимо что-то пошло не так :)
+* Немного поправил структуру, проверил прохождение(не должны падать), но размножать тесты не стал, все методы и вся
+* логика приложения охватывается внутри отдельных тестов. Если это критично, могу разделить 7 тест методов хоть на
+* 20 хоть на 40 хоть на 60 отдельных тестов, но это опять же потребует много времени и больше и больше и бооольше строк
+* кода, которых куда уж больше в рамках одного тз!? >.<
+*
+* Надеюсь, в остальном всё ок, особенно метод epicTimeCalculation (со стримами, лямбдами, ссылками на метод)
+* Тему функционального программирования плохо усвоил, поэтому за него больше всего переживал :D
+*
+* Жду новых комментариев, спасибо за ревью!
+*  */
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
     public static File file = new File("history.csv");
@@ -37,20 +70,20 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             manager.addNewSubTask(subTask);
             manager.addNewSubTask(subTask1);
             manager.addNewSubTask(subTask2);
-            manager.getTaskById(10);
-            manager.getTaskById(11);
-            manager.getEpicById(20);
-            manager.getSubTaskById(30);
-            manager.getSubTaskById(31);
-            manager.getSubTaskById(32);
-            manager.getHistory();
+            System.out.println(manager.getTaskById(10));
+            System.out.println(manager.getTaskById(11));
+            System.out.println(manager.getEpicById(20));
+            System.out.println(manager.getSubTaskById(30));
+            System.out.println(manager.getSubTaskById(31));
+            System.out.println(manager.getSubTaskById(32));
+            System.out.println(manager.getHistory());
             System.out.println(manager.getPrioritizedTasks());
             loadFromFile(file);
         }
 
     @Override
     public int addNewTask(Task task) { // добавляет задачу в мапу
-        checkTaskDate(task.getStartTime());
+        taskDateValidation(task.getStartTime());
         task.setId(taskId++);
         taskData.put(task.getId(), task);
         save();
@@ -67,12 +100,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     @Override
     public int addNewSubTask(SubTask subTask) { // добавляет задачу в мапу и её айди в лист эпика
-        checkTaskDate(subTask.getStartTime());
+        taskDateValidation(subTask.getStartTime());
         subTask.setId(subTaskId++);
         subTaskData.put(subTask.getId(), subTask);
         epicData.get(subTask.getEpicId()).addSubTaskIds(subTask.getId());
-        findEpicStatus(subTask.getEpicId()); // пересчитал статус эпика
-        findEpicTime(subTask.getEpicId());
+        epicStatusCalculation(subTask.getEpicId()); // пересчитал статус эпика
+        epicTimeCalculation(subTask.getEpicId());
         save();
         return subTask.getId();
     }
@@ -157,7 +190,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public Task fromString(String value) { // метод собирает таски и историю из строк
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yy");
         List<String> stringTask = new ArrayList<>(List.of(value.split(",")));
 
         int id = Integer.parseInt(stringTask.get(0));
@@ -286,14 +318,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     }
                 }
             }
-        /*System.out.println(manager.getTaskById(10));
-        System.out.println(manager.getHistory());
-        System.out.println(manager.getTaskById(10));
-        System.out.println(manager.getTaskById(11));
-        System.out.println(manager.getEpicById(20));
-        System.out.println(manager.getSubTaskById(30));
-        System.out.println(manager.getSubTaskById(31));
-        System.out.println(manager.getSubTaskById(32));*/
             return manager;
 
     }

@@ -2,7 +2,6 @@ package task;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -10,7 +9,6 @@ import java.util.Objects;
 
 public class Epic extends Task {
     private List<Integer> subTaskIds = new ArrayList<>();
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yy");
 
     LocalDateTime endTime; // время окончания самой поздней сабтаски
     public Epic(String name, Integer id, String description, Duration duration,
