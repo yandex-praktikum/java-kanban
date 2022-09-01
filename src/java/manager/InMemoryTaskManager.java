@@ -10,9 +10,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static task.Task.formatter;
-
-
 public class InMemoryTaskManager implements TaskManager {
     protected int taskId = 10;
     protected int epicId = 20;
@@ -200,10 +197,10 @@ public class InMemoryTaskManager implements TaskManager {
     public void taskDateValidation(Task task) { // проверка на совпадение времени тасок
         boolean timeIsFree = true;
         LocalDateTime firstFrom = task.getStartTime();
-        LocalDateTime firstTo = LocalDateTime.parse(task.getEndTime(), formatter);
+        LocalDateTime firstTo = task.getEndTime();
         for(Task task1 : allTasks) {
             LocalDateTime secondFrom = task1.getStartTime();
-            LocalDateTime secondTo = LocalDateTime.parse(task1.getEndTime(), formatter);
+            LocalDateTime secondTo = task1.getEndTime();
 
             if (firstFrom.isEqual(secondTo) || firstFrom.isBefore(secondTo) &&
             (firstTo.isEqual(secondFrom) || firstTo.isAfter(secondFrom))) {
@@ -234,7 +231,7 @@ public class InMemoryTaskManager implements TaskManager {
 
         List<LocalDateTime> subEndTimes = getEpicSubTasks(epicId).stream()
                 .map(Task::getEndTime)
-                .map(sd -> LocalDateTime.parse(sd, formatter)).sorted(LocalDateTime::compareTo)
+                .sorted(LocalDateTime::compareTo)
                 .collect(Collectors.toCollection(ArrayList::new));
         getEpicById(epicId).setEndTime(subEndTimes.get(subEndTimes.size() - 1));
 

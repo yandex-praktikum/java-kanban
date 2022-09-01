@@ -64,9 +64,9 @@ public class Task { // класс родитель
         return startTime;
     }
 
-    public String getEndTime() {
+    public LocalDateTime getEndTime() {
         LocalDateTime endTime = LocalDateTime.from(startTime).plus(duration);
-        return endTime.format(formatter);
+        return endTime;
     }
 
     @Override
@@ -78,7 +78,7 @@ public class Task { // класс родитель
                 ", status: " + status +
                 ", duration: " + duration +
                 ", startTime: " + startTime.format(formatter) +
-                ", endTime: " + getEndTime() +"}";
+                ", endTime: " + getEndTime().format(formatter) +"}";
     }
 
     @Override

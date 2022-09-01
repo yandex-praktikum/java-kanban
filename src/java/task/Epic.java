@@ -17,8 +17,8 @@ public class Epic extends Task {
         super(name, id, description, Status.NEW, duration, startTime);
         this.endTime = endTime;
     }
-    public String getEndTime() {
-        return endTime.format(formatter);
+    public LocalDateTime getEndTime() {
+        return endTime;
     }
     public void deleteSubTaskIds() { // очистить список айди сабтасков
        subTaskIds.clear();

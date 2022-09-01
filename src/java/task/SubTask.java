@@ -16,9 +16,9 @@ public class SubTask extends Task { //добавил параметр для с�
         return epicId;
     }
 
-    public String getEndTime() {
+    public LocalDateTime getEndTime() {
         LocalDateTime endTime = LocalDateTime.from(startTime).plus(duration);
-        return endTime.format(formatter);
+        return endTime;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class SubTask extends Task { //добавил параметр для с�
                 ", epicId: " + epicId +
                 ", duration: " + duration +
                 ", startTime: " + startTime.format(formatter) +
-                ", endTime: " + getEndTime() +"}";
+                ", endTime: " + getEndTime().format(formatter) +"}";
     }
 
     @Override

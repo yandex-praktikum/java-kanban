@@ -199,7 +199,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             int size = stringTask.size();
             duration = Duration.parse(stringTask.get(size - 3));
             startTime = LocalDateTime.parse(stringTask.get(size - 2));
-            endTime = LocalDateTime.parse(stringTask.get(size - 1), formatter);
+            endTime = LocalDateTime.parse(stringTask.get(size - 1));
         }
 
         if (stringTask.get(1).equals("TASK")) {
