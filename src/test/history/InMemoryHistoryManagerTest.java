@@ -47,12 +47,8 @@ class InMemoryHistoryManagerTest {
         tasks.remove(subtask); // удалил с конца
         assertEquals(tasks, manager.getHistory(), "Порядок вызовов не сохраняется");
 
-
         manager.deleteTaskById(task.getId()); // удалил из середины
         tasks.remove(task);
         assertEquals(tasks, manager.getHistory(), "Порядок вызовов не сохраняется");
-
-
     }
-
 }

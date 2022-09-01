@@ -51,7 +51,7 @@ public interface TaskManager {
     void epicStatusCalculation(int epicId);
     void epicTimeCalculation(int epicId);
     TreeSet<Task> getPrioritizedTasks();
-    void taskDateValidation(LocalDateTime dateTime) throws IllegalArgumentException;
+    void taskDateValidation(Task task) throws IllegalArgumentException;
 
     List<Task> getHistory();
 

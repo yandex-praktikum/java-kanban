@@ -17,7 +17,7 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="/src/main/java/test/filebacked/test.csv">
+        <entry key="/src/java/test/test.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

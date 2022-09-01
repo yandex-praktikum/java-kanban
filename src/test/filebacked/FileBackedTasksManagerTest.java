@@ -24,7 +24,7 @@ class  FileBackedTasksManagerTest {
         Task task = new Task("Погулять", 1, "Оделся и пошёл",Status.NEW,
                 Duration.ofHours(1), dateTime);
         Task task1 = new Task("Погулять", 1, "Оделся и пошёл",Status.NEW,
-                Duration.ofHours(1), dateTime.minusHours(1));
+                Duration.ofHours(1), dateTime.minusHours(2));
         Epic epic = new Epic("Обед", 10, "Котлетки с пюрешкой и салатиком",
                 Duration.ofHours(0), dateTime.minusHours(1), dateTime.minusHours(9));
         File testFile = new File("test.csv");

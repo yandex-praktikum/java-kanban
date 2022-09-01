@@ -21,13 +21,12 @@ public class InMemoryTaskManager implements TaskManager {
     protected final Map<Integer, Epic> epicData = new HashMap<>();
     protected final Map<Integer, SubTask> subTaskData = new HashMap<>();
     protected final HistoryManager historyManager = Managers.getDefaultHistory();
-
-    protected final List<LocalDateTime> datesValidator = new ArrayList<>();
+    protected final List<Task> allTasks = new ArrayList<>();
     protected final TreeSet<Task> sortedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
 
     @Override
     public int addNewTask(Task task) { // добавляет задачу в мапу
-        taskDateValidation(task.getStartTime());
+        taskDateValidation(task);
         task.setId(taskId++);
         taskData.put(task.getId(), task);
         return task.getId();
@@ -42,7 +41,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public int addNewSubTask(SubTask subTask) { // добавляет задачу в мапу и её айди в лист эпика
-        taskDateValidation(subTask.getStartTime());
+        taskDateValidation(subTask);
         subTask.setId(subTaskId++);
         subTaskData.put(subTask.getId(), subTask);
         epicData.get(subTask.getEpicId()).addSubTaskIds(subTask.getId());
@@ -138,8 +137,8 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateTask(Task task) { // перезаписывает task под тем же id
         sortedTasks.remove(task);
-        datesValidator.remove(task.getStartTime());
-        taskDateValidation(task.getStartTime());
+        allTasks.remove(task);
+        taskDateValidation(task);
         if (taskData.get(task.getId()) != null)
             taskData.put(task.getId(), task);
     }
@@ -147,8 +146,8 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateSubTask(SubTask subTask) { // перезаписывает subTask под тем же id
         sortedTasks.remove(subTask);
-        datesValidator.remove(subTask.getStartTime());
-        taskDateValidation(subTask.getStartTime());
+        allTasks.remove(subTask);
+        taskDateValidation(subTask);
         if (subTaskData.get(subTask.getId()) != null && !subTaskData.get(subTask.getId())
                 .getStatus().equals(subTask.getStatus())) { // если не null и статус изменился
             subTaskData.put(subTask.getId(), subTask); // заменили сабтаск
@@ -198,14 +197,28 @@ public class InMemoryTaskManager implements TaskManager {
         return sortedTasks;
     }
     @Override
-    public void taskDateValidation(LocalDateTime dateTime) { // проверка на совпадение времени тасок
-            if (datesValidator.contains(LocalDateTime.of(dateTime.getYear(), dateTime.getMonthValue(),
-                    dateTime.getDayOfMonth(), dateTime.getHour(), 0, 0)))
-                throw new IllegalArgumentException("Задача с таким временем уже существует." + dateTime);
+    public void taskDateValidation(Task task) { // проверка на совпадение времени тасок
+        boolean timeIsFree = true;
+        LocalDateTime firstFrom = task.getStartTime();
+        LocalDateTime firstTo = LocalDateTime.parse(task.getEndTime(), formatter);
+        for(Task task1 : allTasks) {
+            LocalDateTime secondFrom = task1.getStartTime();
+            LocalDateTime secondTo = LocalDateTime.parse(task1.getEndTime(), formatter);
 
-            datesValidator.add(LocalDateTime.of(dateTime.getYear(), dateTime.getMonthValue(),
-                    dateTime.getDayOfMonth(), dateTime.getHour(), 0, 0));
-    }
+            if (firstFrom.isEqual(secondTo) || firstFrom.isBefore(secondTo) &&
+            (firstTo.isEqual(secondFrom) || firstTo.isAfter(secondFrom))) {
+                timeIsFree = false;
+                break;
+            }
+        }
+            if(!timeIsFree) {
+                throw new IllegalArgumentException("Задача с таким временем уже существует." +
+                        task.getStartTime());
+            } else {
+                allTasks.add(task);
+            }
+        }
+
 
     @Override
     public void epicTimeCalculation(int epicId) { // ищет время начала, продолжительности и конца эпика

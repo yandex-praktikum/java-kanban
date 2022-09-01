@@ -84,8 +84,7 @@ public class Task { // класс родитель
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Task)) return false;
-        Task task = (Task) o;
+        if (!(o instanceof Task task)) return false;
         return Objects.equals(name, task.name) && Objects.equals(id, task.id)
                 && Objects.equals(description, task.description) && Objects.equals(status, task.status);
     }
