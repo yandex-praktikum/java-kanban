@@ -1,24 +1,10 @@
-package manager;
+package manager.managers;
 
+import manager.history.HistoryManager;
 import task.*;
 import java.io.*;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
-
-import static task.Task.formatter;
-
-/*И снова здравствуйте.
- 1. Оказывается, нужно было сделать Mark directory as Sources root для src, теперь тесты видны в src и запукаются.
-
- 2. Так же поправил taskDateValidation, теперь он проверяет пересечения времени выполнения задач.
-
- 3. Добавил подписи к логам.
-
- 4. Вжух и 7 тестов превратились в 46 тестов(могу прям вообще каждое действие в отдельный тест выделить, но это уже
- совсем шиза получится, надеюсь так сойдёт)
-
-*  */
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
     public static File file = new File("history.csv");
@@ -28,46 +14,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         this.file = file;
     }
 
-    public static void main(String[] args) {
-            FileBackedTasksManager manager = Managers.getDefaultBacked();
-            LocalDateTime dateTime = LocalDateTime.of(2022, 8, 26, 12, 0,0);
-            Task task = new Task("Погулять", 0, "Оделся и пошёл", Status.NEW,
-                    Duration.ofHours(0), dateTime);
-            Task task1 = new Task("Вернуться", 0, "Зашёл и разделся", Status.NEW,
-                    Duration.ofHours(0), dateTime.plusHours(10));
-            Epic epic = new Epic("Обед", 0, "Котлетки с пюрешкой и салатиком",
-                    Duration.ofHours(0), dateTime.minusHours(10), dateTime.minusHours(9));
-            manager.addNewTask(task);
-            manager.addNewTask(task1);
-            manager.addNewEpic(epic);
-            SubTask subTask = new SubTask("Котлетки", 0, "Жарим", Status.NEW,
-                    epic.getId(), Duration.ofHours(0), dateTime.minusHours(1));
-            SubTask subTask1 = new SubTask("Пюрешка", 0, "Мнём", Status.NEW,
-                    epic.getId(), Duration.ofHours(0), dateTime.minusHours(2));
-            SubTask subTask2 = new SubTask("Салатик", 0, "Режем и заправляем", Status.NEW,
-                    epic.getId(), Duration.ofHours(0), dateTime.minusHours(3));
-
-            manager.addNewSubTask(subTask);
-            manager.addNewSubTask(subTask1);
-            manager.addNewSubTask(subTask2);
-            System.out.println("Запросил добавленную таску по айди 10:");
-            System.out.println(manager.getTaskById(10));
-            System.out.println("Запросил добавленную таску по айди 11:");
-            System.out.println(manager.getTaskById(11));
-            System.out.println("Запросил добавленный эпик по айди 20:");
-            System.out.println(manager.getEpicById(20));
-            System.out.println("Запросил добавленную сабтаску по айди 30:");
-            System.out.println(manager.getSubTaskById(30));
-            System.out.println("Запросил добавленную сабтаску по айди 31:");
-            System.out.println(manager.getSubTaskById(31));
-            System.out.println("Запросил добавленную сабтаску по айди 32:");
-            System.out.println(manager.getSubTaskById(32));
-            System.out.println("Запросил историю запросов:");
-            System.out.println(manager.getHistory());
-            System.out.println("Запросил таски, отсортированные по времени старта:");
-            System.out.println(manager.getPrioritizedTasks());
-            loadFromFile(file);
-        }
+    public FileBackedTasksManager() {
+    }
 
     @Override
     public int addNewTask(Task task) { // добавляет задачу в мапу
@@ -160,16 +108,16 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 SubTask sub = (SubTask) task;
                 sb.append(sub.getId() + "," + type + "," + sub.getName()
                         + "," + sub.getStatus() + "," + sub.getDescription() + "," + sub.getEpicId()
-                        + "," + sub.getDuration().toString() + ", " + sub.getStartTime().toString() + "\n");
+                        + "," + sub.getDuration() + ", " + sub.getStartTime().toString() + "\n");
             } else if (Types.EPIC.toString().equals(type)) {
                 Epic epic = (Epic) task;
                 sb.append(epic.getId() + "," + type + "," + epic.getName()
                         + "," + epic.getStatus() + "," + epic.getDescription() + "," + epic.getSubTaskIds()
-                        + "," + epic.getDuration().toString() + "," + epic.getStartTime().toString()
-                        + "," + epic.getEndTime() + "\n");
+                        + "," + epic.getDuration() + "," + epic.getStartTime().toString()
+                        + "," + epic.getEndTime().toString() + "\n");
             } else {
                 sb.append(task.getId() + "," + type + "," + task.getName()
-                        + "," + task.getStatus() + "," + task.getDescription() + "," + task.getDuration().toString()
+                        + "," + task.getStatus() + "," + task.getDescription() + "," + task.getDuration()
                         + "," + task.getStartTime().toString() + "\n");
             }
         }
@@ -183,21 +131,21 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         int id = Integer.parseInt(stringTask.get(0));
         String name = stringTask.get(2);
         String description = stringTask.get(4);
-        Duration duration;
+        long duration;
         LocalDateTime startTime;
         LocalDateTime endTime = null;
         int epicId = 0;
 
         if (stringTask.size() == 7) {
-            duration = Duration.parse(stringTask.get(5));
+            duration = Long.parseLong(stringTask.get(5));
             startTime = LocalDateTime.parse(stringTask.get(6));
         } else if (stringTask.size() == 8) {
             epicId = Integer.parseInt(stringTask.get(5));
-            duration = Duration.parse(stringTask.get(6));
+            duration = Long.parseLong(stringTask.get(6));
             startTime = LocalDateTime.parse(stringTask.get(7).trim());
         } else {
             int size = stringTask.size();
-            duration = Duration.parse(stringTask.get(size - 3));
+            duration = Long.parseLong(stringTask.get(size - 3));
             startTime = LocalDateTime.parse(stringTask.get(size - 2));
             endTime = LocalDateTime.parse(stringTask.get(size - 1));
         }
@@ -251,7 +199,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     public static FileBackedTasksManager loadFromFile(File file) { // метод создаёт новый менеджер из файла
-
+        InMemoryTaskManager memoManager = new InMemoryTaskManager();
+        memoManager.allTasks.clear();
             if (!file.isFile())
                 throw new IllegalArgumentException("Файл не найден");
 

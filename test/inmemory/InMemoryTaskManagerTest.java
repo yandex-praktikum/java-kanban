@@ -1,13 +1,13 @@
 package test.inmemory;
 
-import manager.InMemoryTaskManager;
+import manager.managers.InMemoryTaskManager;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import task.Epic;
 import task.Status;
 import task.SubTask;
 import task.Task;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.TreeSet;
@@ -22,7 +22,7 @@ class InMemoryTaskManagerTest {
     @Test
     void addNewTaskTest() {
         Task task = new Task("Погулять", 1, "Оделся и пошёл", Status.NEW,
-                Duration.ofHours(1), dateTime);
+                0L, dateTime);
         manager.addNewTask(task);
         final List<Task> tasks = manager.getTask();
         assertNotNull(tasks, "Задачи на возвращаются");
@@ -33,7 +33,7 @@ class InMemoryTaskManagerTest {
     @Test
     void addNewEpicTest() {
         Epic epic = new Epic("Обед", 10, "Котлетки с пюрешкой и салатиком",
-                Duration.ofHours(0), dateTime.minusHours(10), dateTime.minusHours(9));
+                0L, dateTime.minusHours(10), dateTime.minusHours(9));
         manager.addNewEpic(epic);
         final List<Epic> epics = manager.getEpic();
         assertNotNull(epics, "Задачи на возвращаются");
@@ -43,10 +43,10 @@ class InMemoryTaskManagerTest {
     @Test
     void addNewSubTaskTest() {
         Epic epic = new Epic("Обед", 10, "Котлетки с пюрешкой и салатиком",
-                Duration.ofHours(0), dateTime.minusHours(10), dateTime.minusHours(9));
+                0L, dateTime.minusHours(10), dateTime.minusHours(9));
         manager.addNewEpic(epic);
         SubTask subtask = new SubTask("Котлетки", 100, "Жарим", Status.NEW,
-                epic.getId(), Duration.ofHours(1), dateTime.minusHours(1));
+                epic.getId(), 0L, dateTime.minusHours(1));
         manager.addNewSubTask(subtask);
         final List<SubTask> subs = manager.getSubTask();
 
@@ -58,7 +58,7 @@ class InMemoryTaskManagerTest {
     @Test
     void getTaskByIdTest() {
         Task task = new Task("Погулять", 1, "Оделся и пошёл", Status.NEW,
-                Duration.ofHours(1), dateTime);
+                0L, dateTime);
         final int id = manager.addNewTask(task);
         assertEquals(id, task.getId(), "Айди сохраняется некорректно");
     }
@@ -66,10 +66,10 @@ class InMemoryTaskManagerTest {
     @Test
     void getSubTaskByIdTest() {
         Epic epic = new Epic("Обед", 10, "Котлетки с пюрешкой и салатиком",
-                Duration.ofHours(0), dateTime.minusHours(10), dateTime.minusHours(9));
+                0L, dateTime.minusHours(10), dateTime.minusHours(9));
         manager.addNewEpic(epic);
         SubTask subtask = new SubTask("Котлетки", 100, "Жарим", Status.NEW,
-                epic.getId(), Duration.ofHours(1), dateTime.minusHours(1));
+                epic.getId(), 0L, dateTime.minusHours(1));
         final int id = manager.addNewSubTask(subtask);
         assertEquals(id, subtask.getId(), "Айди сохраняется некорректно");
     }
@@ -77,7 +77,7 @@ class InMemoryTaskManagerTest {
     @Test
     void getEpicByIdTest() {
         Epic epic = new Epic("Обед", 10, "Котлетки с пюрешкой и салатиком",
-                Duration.ofHours(0), dateTime.minusHours(10), dateTime.minusHours(9));
+                0L, dateTime.minusHours(10), dateTime.minusHours(9));
         final int id = manager.addNewEpic(epic);
         assertEquals(id, epic.getId(), "Айди сохраняется некорректно");
     }
@@ -85,7 +85,7 @@ class InMemoryTaskManagerTest {
     @Test
     void deleteAllTasksTest() {
         Task task = new Task("Погулять", 1, "Оделся и пошёл", Status.NEW,
-                Duration.ofHours(1), dateTime);
+                0L, dateTime);
         manager.addNewTask(task);
         manager.deleteAllTasks();
         assertTrue(manager.getTask().isEmpty(), "Таски не удаляются");
@@ -94,10 +94,10 @@ class InMemoryTaskManagerTest {
     @Test
     void deleteAllSubTasksTest() {
         Epic epic = new Epic("Обед", 10, "Котлетки с пюрешкой и салатиком",
-                Duration.ofHours(0), dateTime.minusHours(10), dateTime.minusHours(9));
+                0L, dateTime.minusHours(10), dateTime.minusHours(9));
         manager.addNewEpic(epic);
         SubTask subtask = new SubTask("Котлетки", 100, "Жарим", Status.NEW,
-                epic.getId(), Duration.ofHours(1), dateTime.minusHours(1));
+                epic.getId(), 0L, dateTime.minusHours(1));
         manager.addNewSubTask(subtask);
         manager.deleteAllSubTasks();
         assertTrue(manager.getSubTask().isEmpty(), "Сабтаски не удаляются");
@@ -106,7 +106,7 @@ class InMemoryTaskManagerTest {
     @Test
     void deleteAllEpicsTest() {
         Epic epic = new Epic("Обед", 10, "Котлетки с пюрешкой и салатиком",
-                Duration.ofHours(0), dateTime.minusHours(10), dateTime.minusHours(9));
+                0L, dateTime.minusHours(10), dateTime.minusHours(9));
         manager.addNewEpic(epic);
         manager.deleteAllEpics();
         assertTrue(manager.getEpic().isEmpty(), "Эпики не удаляются");
@@ -115,7 +115,7 @@ class InMemoryTaskManagerTest {
     @Test
     void deleteTaskByIdTest() {
         Task task = new Task("Погулять", 1, "Оделся и пошёл", Status.NEW,
-                Duration.ofHours(1), dateTime);
+                0L, dateTime);
         manager.addNewTask(task);
         manager.deleteTaskById(task.getId());
         assertTrue(manager.getTask().isEmpty(), "Таски не удаляются");
@@ -124,10 +124,10 @@ class InMemoryTaskManagerTest {
     @Test
     void deleteSubTaskByIdTest() {
         Epic epic = new Epic("Обед", 10, "Котлетки с пюрешкой и салатиком",
-                Duration.ofHours(0), dateTime.minusHours(10), dateTime.minusHours(9));
+                0L, dateTime.minusHours(10), dateTime.minusHours(9));
         manager.addNewEpic(epic);
         SubTask subtask = new SubTask("Котлетки", 100, "Жарим", Status.NEW,
-                epic.getId(), Duration.ofHours(1), dateTime.minusHours(1));
+                epic.getId(), 0L, dateTime.minusHours(1));
         manager.addNewSubTask(subtask);
         manager.deleteSubTaskById(subtask.getId());
         assertTrue(manager.getSubTask().isEmpty(), "Сабтаски не удаляются");
@@ -136,7 +136,7 @@ class InMemoryTaskManagerTest {
     @Test
     void deleteEpicByIdTest() {
         Epic epic = new Epic("Обед", 10, "Котлетки с пюрешкой и салатиком",
-                Duration.ofHours(0), dateTime.minusHours(10), dateTime.minusHours(9));
+                0L, dateTime.minusHours(10), dateTime.minusHours(9));
         manager.addNewEpic(epic);
         manager.deleteEpicById(epic.getId());
         assertTrue(manager.getEpic().isEmpty(), "Эпики не удаляются");
@@ -145,7 +145,7 @@ class InMemoryTaskManagerTest {
     @Test
     void updateTaskTest() {
         Task task = new Task("Погулять", 1, "Оделся и пошёл", Status.NEW,
-                Duration.ofHours(1), dateTime);
+                0L, dateTime);
         manager.addNewTask(task);
         task.setName("Протестировать");
         manager.updateTask(task);
@@ -155,10 +155,10 @@ class InMemoryTaskManagerTest {
     @Test
     void updateSubTaskTest() {
         Epic epic = new Epic("Обед", 10, "Котлетки с пюрешкой и салатиком",
-                Duration.ofHours(0), dateTime.minusHours(10), dateTime.minusHours(9));
+                0L, dateTime.minusHours(10), dateTime.minusHours(9));
         manager.addNewEpic(epic);
         SubTask subtask = new SubTask("Котлетки", 100, "Жарим", Status.NEW,
-                epic.getId(), Duration.ofHours(1), dateTime.minusHours(1));
+                epic.getId(), 0L, dateTime.minusHours(1));
         manager.addNewSubTask(subtask);
         subtask.setName("Протестировать");
         manager.updateSubTask(subtask);
@@ -168,7 +168,7 @@ class InMemoryTaskManagerTest {
     @Test
     void updateEpicTest() {
         Epic epic = new Epic("Обед", 10, "Котлетки с пюрешкой и салатиком",
-                Duration.ofHours(0), dateTime.minusHours(10), dateTime.minusHours(9));
+                0L, dateTime.minusHours(10), dateTime.minusHours(9));
         manager.addNewEpic(epic);
         epic.setName("Протестировать");
         manager.updateEpic(epic);
@@ -178,10 +178,10 @@ class InMemoryTaskManagerTest {
     @Test
     void getEpicSubTasksTest() {
         Epic epic = new Epic("Обед", 10, "Котлетки с пюрешкой и салатиком",
-                Duration.ofHours(0), dateTime.minusHours(10), dateTime.minusHours(9));
+                0L, dateTime.minusHours(10), dateTime.minusHours(9));
         manager.addNewEpic(epic);
         SubTask subtask = new SubTask("Котлетки", 100, "Жарим", Status.NEW,
-                epic.getId(), Duration.ofHours(1), dateTime.minusHours(1));
+                epic.getId(), 0L, dateTime.minusHours(1));
         manager.addNewSubTask(subtask);
         final List<SubTask> epicSubs = manager.getEpicSubTasks(subtask.getEpicId());
         assertNotNull(epicSubs, "Сабтаски не возвращаются по эпик айди");
@@ -190,12 +190,12 @@ class InMemoryTaskManagerTest {
     @Test
     void getPrioritizedTasksTest() {
         Task task = new Task("Погулять", 1, "Оделся и пошёл",Status.NEW,
-                Duration.ofHours(1), dateTime);
+                0L, dateTime);
         Epic epic = new Epic("Обед", 10, "Котлетки с пюрешкой и салатиком",
-                Duration.ofHours(0), dateTime.minusHours(1), dateTime.minusHours(9));
+                0L, dateTime.minusHours(1), dateTime.minusHours(9));
         manager.addNewEpic(epic);
         SubTask subtask = new SubTask("Котлетки", 100, "Жарим", Status.NEW,
-                epic.getId(), Duration.ofHours(1), dateTime.minusHours(2));
+                epic.getId(), 0L, dateTime.minusHours(2));
         manager.addNewTask(task);
         manager.addNewSubTask(subtask);
         TreeSet<Task> prioritized = manager.getPrioritizedTasks();
@@ -210,9 +210,9 @@ class InMemoryTaskManagerTest {
     @Test
     void taskDateValidationTest() {
         Task task = new Task("Погулять", 1, "Оделся и пошёл",Status.NEW,
-                Duration.ofHours(1), dateTime);
+                0L, dateTime);
         Task task1 = new Task("Погулять", 1, "Оделся и пошёл",Status.NEW,
-                Duration.ofHours(1), dateTime);
+                0L, dateTime);
         manager.addNewTask(task);
         final IllegalArgumentException exception = assertThrows(
                 IllegalArgumentException.class,
@@ -224,10 +224,10 @@ class InMemoryTaskManagerTest {
     @Test
     void epicTimeCalculationTest() {
         Epic epic = new Epic("Обед", 10, "Котлетки с пюрешкой и салатиком",
-                Duration.ofHours(0), dateTime.minusHours(10), dateTime.minusHours(9));
+                0L, dateTime.minusHours(10), dateTime.minusHours(9));
         manager.addNewEpic(epic);
         SubTask subtask = new SubTask("Котлетки", 100, "Жарим", Status.NEW,
-                epic.getId(), Duration.ofHours(1), dateTime.minusHours(1));
+                epic.getId(), 0L, dateTime.minusHours(1));
         manager.addNewSubTask(subtask);
         manager.epicTimeCalculation(subtask.getEpicId());
         assertEquals(epic.getDuration(), subtask.getDuration(), "Продолжительность эпика не меняется");
@@ -236,13 +236,13 @@ class InMemoryTaskManagerTest {
     @Test
     void epicStatusCalculationTest() {
         Epic epic = new Epic("Обед", 10, "Котлетки с пюрешкой и салатиком",
-                Duration.ofHours(0), dateTime.minusHours(10), dateTime.minusHours(9));
+                0L, dateTime.minusHours(10), dateTime.minusHours(9));
         manager.addNewEpic(epic);
         SubTask subtask = new SubTask("Котлетки", 100, "Жарим", Status.NEW,
-                epic.getId(), Duration.ofHours(1), dateTime.minusHours(1));
+                epic.getId(), 0L, dateTime.minusHours(1));
         manager.addNewSubTask(subtask);
         SubTask subtask1 = new SubTask("Котлетки", 100, "Жарим", Status.NEW,
-                epic.getId(), Duration.ofHours(1), dateTime.minusHours(3));
+                epic.getId(), 0L, dateTime.minusHours(3));
         manager.addNewSubTask(subtask1);
         assertEquals(epic.getStatus(), Status.NEW, "Статус эпика не пересчитывается"); //все NEW
         subtask.setStatus(Status.DONE);

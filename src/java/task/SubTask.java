@@ -7,7 +7,7 @@ import java.util.Objects;
 public class SubTask extends Task { //добавил параметр для связи с эпиком
     private final Integer epicId;
     public SubTask(String name, Integer id, String description, Status status, Integer epicId,
-                   Duration duration, LocalDateTime startTime) {
+                   Long duration, LocalDateTime startTime) {
         super(name, id, description, status, duration, startTime);
         this.epicId = epicId;
     }
@@ -17,7 +17,7 @@ public class SubTask extends Task { //добавил параметр для с�
     }
 
     public LocalDateTime getEndTime() {
-        LocalDateTime endTime = LocalDateTime.from(startTime).plus(duration);
+        LocalDateTime endTime = LocalDateTime.from(startTime).plus(Duration.ofMillis(duration));
         return endTime;
     }
 
@@ -29,7 +29,7 @@ public class SubTask extends Task { //добавил параметр для с�
                 ", description: " + description +
                 ", status: " + status +
                 ", epicId: " + epicId +
-                ", duration: " + duration +
+                ", duration: " + Duration.ofMillis(duration) +
                 ", startTime: " + startTime.format(formatter) +
                 ", endTime: " + getEndTime().format(formatter) +"}";
     }

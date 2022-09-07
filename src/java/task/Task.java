@@ -10,12 +10,12 @@ public class Task { // класс родитель
     protected Integer id; // идентификационный номер (будет ключём в мапе)
     protected String description; // описание задачи
     protected Status status; // enum статусов
-    protected Duration duration; // продолжительность таски
+    protected Long duration; // продолжительность таски
     protected LocalDateTime startTime; // дата старта
     public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yy");
 
     public Task(String name, Integer id, String description,
-                Status status, Duration duration, LocalDateTime startTime) {
+                Status status, Long duration, LocalDateTime startTime) {
         this.name = name;
         this.id = id;
         this.description = description;
@@ -56,7 +56,7 @@ public class Task { // класс родитель
         return status;
     }
 
-    public Duration getDuration() {
+    public Long getDuration() {
         return duration;
     }
 
@@ -65,7 +65,7 @@ public class Task { // класс родитель
     }
 
     public LocalDateTime getEndTime() {
-        LocalDateTime endTime = LocalDateTime.from(startTime).plus(duration);
+        LocalDateTime endTime = LocalDateTime.from(startTime).plus(Duration.ofMillis(duration));
         return endTime;
     }
 
@@ -76,9 +76,9 @@ public class Task { // класс родитель
                 ", id: " + id +
                 ", description: " + description +
                 ", status: " + status +
-                ", duration: " + duration +
+                ", duration: " + Duration.ofMillis(duration) +
                 ", startTime: " + startTime.format(formatter) +
-                ", endTime: " + getEndTime().format(formatter) +"}";
+                ", endTime: " + getEndTime().format(formatter) + "}";
     }
 
     @Override

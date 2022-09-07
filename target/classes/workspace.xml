@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="11136f88-878b-431a-a238-e47347861a36" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/java/manager/api/adapter/LocalDateAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/manager/api/adapter/LocalDateTimeDeserializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/manager/api/adapter/LocalDateTimeSerializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/manager/api/http/HttpTaskServer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/manager/api/http/KVTaskClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/manager/api/server/KVServer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/java/manager/managers/HttpTaskManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/httpmanager/HttpTaskManagerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/httpserver/HttpTaskServerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/csv-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-plugin.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/history.csv" beforeDir="false" afterPath="$PROJECT_DIR$/history.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/java-kanban.iml" beforeDir="false" afterPath="$PROJECT_DIR$/java-kanban.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/manager/FileBackedTasksManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/manager/managers/FileBackedTasksManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/manager/HistoryManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/manager/history/HistoryManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/manager/InMemoryHistoryManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/manager/history/InMemoryHistoryManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/manager/InMemoryTaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/manager/managers/InMemoryTaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/manager/ManagerSaveException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/manager/managers/ManagerSaveException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/manager/Managers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/manager/managers/Managers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/manager/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/manager/managers/TaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/manager/Types.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/manager/managers/Types.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/task/Epic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/task/Epic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/task/SubTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/task/SubTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/task/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/task/Task.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/.idea/csv-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/.idea/csv-plugin.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/csv-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/csv-plugin.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/history.csv" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/history.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/java-kanban.iml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/java-kanban.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.history.csv" beforeDir="false" afterPath="$PROJECT_DIR$/test.history.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/filebacked/FileBackedTasksManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/filebacked/FileBackedTasksManagerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/history/InMemoryHistoryManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/history/InMemoryHistoryManagerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/inmemory/InMemoryTaskManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/inmemory/InMemoryTaskManagerTest.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Enum" />
+        <option value="Class" />
+        <option value="JUnit5 Test Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectId" id="2AijAeCcpiSJkhQYUoIROCoCBbN" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Downloaded.Files.Path.Enabled": "false",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "create.test.in.the.same.root": "true",
+    "jdk.selected.JAVA_MODULE": "11",
+    "last_directory_selection": "/Users/macbook/Desktop/dev/java-kanban/src/java/manager/api/http",
+    "last_opened_file_path": "/Users/macbook/Desktop/dev/java-kanban",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "MavenSettings"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="test.filebacked" />
+      <recent name="test" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/.idea" />
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/src/java" />
+      <recent name="$PROJECT_DIR$/src/test" />
+    </key>
+    <key name="ExtractSuperBase.RECENT_KEYS">
+      <recent name="Manager" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="manager.api.http" />
+      <recent name="manager.managers" />
+      <recent name="manager" />
+      <recent name="" />
+      <recent name="task" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.test in java-kanban">
+    <configuration name="manager.FileBackedTasksManager" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="java-kanban" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="manager.managers.FileBackedTasksManager" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="manager.managers.FileBackedTasksManager" />
+      <module name="java-kanban" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HttpTaskManagerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="java-kanban" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="test.httpmanager.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="test.httpmanager" />
+      <option name="MAIN_CLASS_NAME" value="test.httpmanager.HttpTaskManagerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HttpTaskManagerTest.loadFromServerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="java-kanban" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="test.httpmanager.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="test.httpmanager" />
+      <option name="MAIN_CLASS_NAME" value="test.httpmanager.HttpTaskManagerTest" />
+      <option name="METHOD_NAME" value="loadFromServerTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HttpTaskServeTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="java-kanban" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="test.httpmanager.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="test.httpserver" />
+      <option name="MAIN_CLASS_NAME" value="test.httpserver.HttpTaskServeTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HttpTaskServerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="java-kanban" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="test.httpserver.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="test.httpserver" />
+      <option name="MAIN_CLASS_NAME" value="test.httpserver.HttpTaskServerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TaskManagerTests" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
+      <module name="java-kanban" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="test" />
+      <option name="MAIN_CLASS_NAME" value="test.TaskManagerTests" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TaskManagerTests" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
+      <module name="java-kanban" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" value="corretto-16" />
+      <option name="PACKAGE_NAME" value="test" />
+      <option name="MAIN_CLASS_NAME" value="test.TaskManagerTests" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="test in java-kanban" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="java-kanban" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="test" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JUnit5Examples [test]" type="MavenRunConfiguration" factoryName="Maven" nameIsGenerated="true">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="test" />
+              </list>
+            </option>
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Application.manager.managers.FileBackedTasksManager" />
+      <item itemvalue="Application.manager.FileBackedTasksManager" />
+      <item itemvalue="JUnit.TaskManagerTests" />
+      <item itemvalue="JUnit.HttpTaskManagerTest.loadFromServerTest" />
+      <item itemvalue="JUnit.HttpTaskServeTest" />
+      <item itemvalue="JUnit.HttpTaskServerTest" />
+      <item itemvalue="JUnit.HttpTaskManagerTest" />
+      <item itemvalue="JUnit.test in java-kanban" />
+      <item itemvalue="Maven.JUnit5Examples [test]" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.test in java-kanban" />
+        <item itemvalue="JUnit.HttpTaskManagerTest.loadFromServerTest" />
+        <item itemvalue="JUnit.HttpTaskManagerTest" />
+        <item itemvalue="JUnit.HttpTaskServerTest" />
+        <item itemvalue="JUnit.HttpTaskServeTest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="11136f88-878b-431a-a238-e47347861a36" name="Changes" comment="" />
+      <created>1655499157443</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1655499157443</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.csv" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

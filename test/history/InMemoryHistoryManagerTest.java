@@ -1,6 +1,6 @@
 package test.history;
 
-import manager.InMemoryTaskManager;
+import manager.managers.InMemoryTaskManager;
 import org.junit.jupiter.api.Test;
 import task.Epic;
 import task.Status;
@@ -22,12 +22,12 @@ class InMemoryHistoryManagerTest {
     @Test
     void historySaveAndPrintCheck() { // проверка истории
         Task task = new Task("Погулять", 1, "Оделся и пошёл", Status.NEW,
-                Duration.ofHours(1), dateTime);
+                0L, dateTime);
         Epic epic = new Epic("Обед", 10, "Котлетки с пюрешкой и салатиком",
-                Duration.ofHours(0), dateTime.minusHours(1), dateTime.minusHours(9));
+                0L, dateTime.minusHours(1), dateTime.minusHours(9));
         manager.addNewEpic(epic);
         SubTask subtask = new SubTask("Котлетки", 100, "Жарим", Status.NEW,
-                epic.getId(), Duration.ofHours(1), dateTime.minusHours(2));
+                epic.getId(), 0L, dateTime.minusHours(2));
         manager.addNewTask(task);
         manager.addNewSubTask(subtask);
 

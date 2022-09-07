@@ -1,5 +1,6 @@
-package manager;
+package manager.managers;
 
+import manager.history.HistoryManager;
 import task.Epic;
 import task.SubTask;
 import task.Task;
@@ -220,7 +221,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void epicTimeCalculation(int epicId) { // ищет время начала, продолжительности и конца эпика
         if(getEpicSubTasks(epicId).isEmpty()) {
-            getEpicById(epicId).setDuration(Duration.ofNanos(0));
+            getEpicById(epicId).setDuration(0L);
             return;
         }
 
@@ -237,9 +238,10 @@ public class InMemoryTaskManager implements TaskManager {
 
         Duration epicDuration = Duration.ofNanos(0);
         for (int id : epicData.get(epicId).getSubTaskIds()){
-            epicDuration = epicDuration.plus(subTaskData.get(id).getDuration());
+            epicDuration = epicDuration.plus(Duration.ofNanos(subTaskData.get(id).getDuration()));
         }
-        getEpicById(epicId).setDuration(epicDuration);
+        Long duration = epicDuration.toNanos();
+        getEpicById(epicId).setDuration(duration);
     }
 
     @Override

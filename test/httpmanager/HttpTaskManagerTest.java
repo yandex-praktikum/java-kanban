@@ -1,52 +1,58 @@
-package test.filebacked;
+package test.httpmanager;
 
-import manager.managers.FileBackedTasksManager;
+import manager.api.http.HttpTaskServer;
+import manager.api.server.KVServer;
+import manager.managers.HttpTaskManager;
+import manager.managers.Managers;
 import org.junit.jupiter.api.Test;
 import task.Epic;
 import task.Status;
+import task.SubTask;
 import task.Task;
-import java.io.File;
-import java.time.Duration;
+
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
-class  FileBackedTasksManagerTest {
-
-    File file = new File("historyTest.csv");
-    FileBackedTasksManager manager = new FileBackedTasksManager(file);
+class HttpTaskManagerTest {
+    private KVServer kvServer;
+    HttpTaskManager manager;
     LocalDateTime dateTime = LocalDateTime.of(2022, 8, 26,
             12, 0, 0);
 
     @Test
-    void loadFromCSVCheck() {
+    void loadFromServerTest() throws IOException {
+        kvServer = Managers.getDefaultKVServer();
+        manager = new HttpTaskManager(KVServer.PORT);
+        HttpTaskServer serv = new HttpTaskServer(manager);
+        serv.start();
+
         Task task = new Task("Погулять", 1, "Оделся и пошёл",Status.NEW,
                 0L, dateTime);
         Task task1 = new Task("Погулять", 1, "Оделся и пошёл",Status.NEW,
                 0L, dateTime.minusHours(2));
         Epic epic = new Epic("Обед", 10, "Котлетки с пюрешкой и салатиком",
                 0L, dateTime.minusHours(1), dateTime.minusHours(9));
-        File testFile = new File("test.csv");
 
+        manager.addNewEpic(epic);
 
-        final IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> FileBackedTasksManager.loadFromFile(testFile)
-        );
-
-        assertEquals("Файл не найден", exception.getMessage()); // пустой файл
+        SubTask subTask = new SubTask("Котлетки", 0, "Жарим", Status.NEW,
+                epic.getId(), 1L, LocalDateTime.now().plusHours(2));
 
         manager.addNewTask(task1);
         manager.addNewTask(task);
-        manager.addNewEpic(epic); // эпик без сабтасок
+        manager.addNewSubTask(subTask);
 
-        FileBackedTasksManager newManager = FileBackedTasksManager.loadFromFile(file);
+
+        HttpTaskManager newManager = new HttpTaskManager(KVServer.PORT, true);
         assertEquals(manager.getTask(), newManager.getTask(), "Список задач не совпадает"); //файл без истории
 
         manager.getTaskById(task.getId());
         manager.getTaskById(task1.getId());
-        newManager = FileBackedTasksManager.loadFromFile(file);
+
         assertNotNull(newManager.getHistory(), "История не восстановлена"); //файл с историей
+        kvServer.stop();
+        serv.stop();
     }
 }

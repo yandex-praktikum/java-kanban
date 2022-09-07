@@ -11,7 +11,7 @@ public class Epic extends Task {
     private List<Integer> subTaskIds = new ArrayList<>();
 
     LocalDateTime endTime; // время окончания самой поздней сабтаски
-    public Epic(String name, Integer id, String description, Duration duration,
+    public Epic(String name, Integer id, String description, Long duration,
                 LocalDateTime startTime, LocalDateTime endTime) {
 
         super(name, id, description, Status.NEW, duration, startTime);
@@ -43,7 +43,8 @@ public class Epic extends Task {
     public void setSubTaskIds(List<Integer> subTaskIds) {
         this.subTaskIds = subTaskIds;
     }
-    public void setDuration(Duration duration) {
+    public void setDuration(Long duration) {
+
         this.duration = duration;
     }
 
@@ -63,7 +64,7 @@ public class Epic extends Task {
                 ", description: " + description +
                 ", status: " + status +
                 ", subTaskIds: " + subTaskIds +
-                ", duration: " + duration +
+                ", duration: " + Duration.ofMillis(duration)+
                 ", startTime: " + startTime.format(formatter) +
                 ", endTime: " + endTime.format(formatter) + "}";
     }
