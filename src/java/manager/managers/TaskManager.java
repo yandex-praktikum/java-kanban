@@ -39,11 +39,11 @@ public interface TaskManager {
 
     void updateEpic(Epic epic);
 
-    List<Task> getTask();
+    List<Task> getTasks();
 
-    List<Epic> getEpic();
+    List<Epic> getEpics();
 
-    List<SubTask> getSubTask();
+    List<SubTask> getSubTasks();
 
     List<SubTask> getEpicSubTasks(int epicId);
 

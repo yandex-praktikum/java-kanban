@@ -1,7 +1,6 @@
 package test.inmemory;
 
 import manager.managers.InMemoryTaskManager;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import task.Epic;
 import task.Status;
@@ -24,7 +23,7 @@ class InMemoryTaskManagerTest {
         Task task = new Task("Погулять", 1, "Оделся и пошёл", Status.NEW,
                 0L, dateTime);
         manager.addNewTask(task);
-        final List<Task> tasks = manager.getTask();
+        final List<Task> tasks = manager.getTasks();
         assertNotNull(tasks, "Задачи на возвращаются");
         assertEquals(task, tasks.get(0), "Задачи не совпадают");
     }
@@ -35,7 +34,7 @@ class InMemoryTaskManagerTest {
         Epic epic = new Epic("Обед", 10, "Котлетки с пюрешкой и салатиком",
                 0L, dateTime.minusHours(10), dateTime.minusHours(9));
         manager.addNewEpic(epic);
-        final List<Epic> epics = manager.getEpic();
+        final List<Epic> epics = manager.getEpics();
         assertNotNull(epics, "Задачи на возвращаются");
         assertEquals(epic, epics.get(0), "Задачи не совпадают");
     }
@@ -48,7 +47,7 @@ class InMemoryTaskManagerTest {
         SubTask subtask = new SubTask("Котлетки", 100, "Жарим", Status.NEW,
                 epic.getId(), 0L, dateTime.minusHours(1));
         manager.addNewSubTask(subtask);
-        final List<SubTask> subs = manager.getSubTask();
+        final List<SubTask> subs = manager.getSubTasks();
 
         assertNotNull(subs, "Задачи на возвращаются");
         assertEquals(subtask, subs.get(0), "Задачи не совпадают");
@@ -88,7 +87,7 @@ class InMemoryTaskManagerTest {
                 0L, dateTime);
         manager.addNewTask(task);
         manager.deleteAllTasks();
-        assertTrue(manager.getTask().isEmpty(), "Таски не удаляются");
+        assertTrue(manager.getTasks().isEmpty(), "Таски не удаляются");
     }
 
     @Test
@@ -100,7 +99,7 @@ class InMemoryTaskManagerTest {
                 epic.getId(), 0L, dateTime.minusHours(1));
         manager.addNewSubTask(subtask);
         manager.deleteAllSubTasks();
-        assertTrue(manager.getSubTask().isEmpty(), "Сабтаски не удаляются");
+        assertTrue(manager.getSubTasks().isEmpty(), "Сабтаски не удаляются");
     }
 
     @Test
@@ -109,7 +108,7 @@ class InMemoryTaskManagerTest {
                 0L, dateTime.minusHours(10), dateTime.minusHours(9));
         manager.addNewEpic(epic);
         manager.deleteAllEpics();
-        assertTrue(manager.getEpic().isEmpty(), "Эпики не удаляются");
+        assertTrue(manager.getEpics().isEmpty(), "Эпики не удаляются");
     }
 
     @Test
@@ -118,7 +117,7 @@ class InMemoryTaskManagerTest {
                 0L, dateTime);
         manager.addNewTask(task);
         manager.deleteTaskById(task.getId());
-        assertTrue(manager.getTask().isEmpty(), "Таски не удаляются");
+        assertTrue(manager.getTasks().isEmpty(), "Таски не удаляются");
     }
 
     @Test
@@ -130,7 +129,7 @@ class InMemoryTaskManagerTest {
                 epic.getId(), 0L, dateTime.minusHours(1));
         manager.addNewSubTask(subtask);
         manager.deleteSubTaskById(subtask.getId());
-        assertTrue(manager.getSubTask().isEmpty(), "Сабтаски не удаляются");
+        assertTrue(manager.getSubTasks().isEmpty(), "Сабтаски не удаляются");
     }
 
     @Test
@@ -139,7 +138,7 @@ class InMemoryTaskManagerTest {
                 0L, dateTime.minusHours(10), dateTime.minusHours(9));
         manager.addNewEpic(epic);
         manager.deleteEpicById(epic.getId());
-        assertTrue(manager.getEpic().isEmpty(), "Эпики не удаляются");
+        assertTrue(manager.getEpics().isEmpty(), "Эпики не удаляются");
     }
 
     @Test

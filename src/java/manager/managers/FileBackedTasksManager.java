@@ -256,6 +256,5 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 }
             }
             return manager;
-
     }
 }

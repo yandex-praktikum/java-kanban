@@ -20,7 +20,8 @@ public class InMemoryTaskManager implements TaskManager {
     protected final Map<Integer, SubTask> subTaskData = new HashMap<>();
     protected final HistoryManager historyManager = Managers.getDefaultHistory();
     protected final List<Task> allTasks = new ArrayList<>();
-    protected final TreeSet<Task> sortedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
+    protected final TreeSet<Task> sortedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime,
+            Comparator.nullsLast(Comparator.naturalOrder())));
 
     @Override
     public int addNewTask(Task task) { // добавляет задачу в мапу
@@ -163,17 +164,17 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public List<Task> getTask() { // возвращает лист тасков
+    public List<Task> getTasks() { // возвращает лист тасков
         return  List.copyOf(taskData.values());
     }
 
     @Override
-    public List<Epic> getEpic() { // возвращает лист эпиков
+    public List<Epic> getEpics() { // возвращает лист эпиков
         return List.copyOf(epicData.values());
     }
 
     @Override
-    public List<SubTask> getSubTask() { // возвращает лист сабтасков
+    public List<SubTask> getSubTasks() { // возвращает лист сабтасков
         return List.copyOf(subTaskData.values());
     }
 
@@ -194,6 +195,7 @@ public class InMemoryTaskManager implements TaskManager {
         sortedTasks.addAll(epicData.values());
         return sortedTasks;
     }
+
     @Override
     public void taskDateValidation(Task task) { // проверка на совпадение времени тасок
         boolean timeIsFree = true;

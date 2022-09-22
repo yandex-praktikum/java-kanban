@@ -8,12 +8,7 @@ import task.SubTask;
 import task.Task;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
-
-/* Привет, ревьюер! Реализовал сервер, клиент, менеджер, и снова сервер!
-* Всё работает, тесты на все эндпоинты и на загрузку с сервера passed.
-* Точно где-то есть лажа, но у меня глаз замылился, сам не найду. С нетерпением жду комментариев ! :)*/
 
 public class HttpTaskManager extends FileBackedTasksManager {
     private final Gson gson;
@@ -45,21 +40,33 @@ public class HttpTaskManager extends FileBackedTasksManager {
     private void load() {
         Type listType = new TypeToken<List<? extends Task>>() {}.getType();
 
-        ArrayList<Task> tasks = gson.fromJson(client.load("tasks"), listType);
+        List<Task> tasks = gson.fromJson(client.load("tasks"), listType);
         addTasks(tasks);
-        ArrayList<Epic> epics = gson.fromJson(client.load("epics"), listType);
+        List<Epic> epics = gson.fromJson(client.load("epics"), listType);
         addTasks(epics);
-        ArrayList<SubTask> subtasks = gson.fromJson(client.load("subtasks"), listType);
+        List<SubTask> subtasks = gson.fromJson(client.load("subtasks"), listType);
         addTasks(subtasks);
+        List<Task> history = gson.fromJson(client.load("history"), listType);
+        for (Task task : history) {
+            if (task.getId() < 20 ) {
+                historyManager.add(getTaskById(task.getId()));
+            } else if (task.getId() < 30) {
+                historyManager.add(getEpicById(task.getId()));
+            } else {
+                historyManager.add(getSubTaskById(task.getId()));
+            }
+        }
     }
 
     @Override
     public void save() {
-        String jsonTasks = gson.toJson(getTask());
+        String jsonTasks = gson.toJson(getTasks());
         client.put("tasks", jsonTasks);
-        String jsonEpics = gson.toJson(getEpic());
+        String jsonEpics = gson.toJson(getEpics());
         client.put("epics", jsonEpics);
-        String jsonSubtasks = gson.toJson(getSubTask());
+        String jsonSubtasks = gson.toJson(getSubTasks());
         client.put("subtasks", jsonSubtasks);
+        String jsonHistory = gson.toJson(getHistory());
+        client.put("history", jsonHistory);
     }
 }

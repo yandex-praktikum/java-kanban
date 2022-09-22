@@ -42,7 +42,7 @@ class  FileBackedTasksManagerTest {
         manager.addNewEpic(epic); // эпик без сабтасок
 
         FileBackedTasksManager newManager = FileBackedTasksManager.loadFromFile(file);
-        assertEquals(manager.getTask(), newManager.getTask(), "Список задач не совпадает"); //файл без истории
+        assertEquals(manager.getTasks(), newManager.getTasks(), "Список задач не совпадает"); //файл без истории
 
         manager.getTaskById(task.getId());
         manager.getTaskById(task1.getId());

@@ -5,38 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="11136f88-878b-431a-a238-e47347861a36" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/java/manager/api/adapter/LocalDateAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/java/manager/api/adapter/LocalDateTimeDeserializer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/java/manager/api/adapter/LocalDateTimeSerializer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/java/manager/api/http/HttpTaskServer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/java/manager/api/http/KVTaskClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/java/manager/api/server/KVServer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/java/manager/managers/HttpTaskManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/httpmanager/HttpTaskManagerTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/httpserver/HttpTaskServerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/csv-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-plugin.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/history.csv" beforeDir="false" afterPath="$PROJECT_DIR$/history.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_gson_gson_2_9_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_api_5_8_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_engine_5_8_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_params_5_8_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_commons_1_8_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_engine_1_8_1.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/java-kanban.iml" beforeDir="false" afterPath="$PROJECT_DIR$/java-kanban.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/manager/FileBackedTasksManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/manager/managers/FileBackedTasksManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/manager/HistoryManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/manager/history/HistoryManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/manager/InMemoryHistoryManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/manager/history/InMemoryHistoryManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/manager/InMemoryTaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/manager/managers/InMemoryTaskManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/manager/ManagerSaveException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/manager/managers/ManagerSaveException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/manager/Managers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/manager/managers/Managers.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/manager/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/manager/managers/TaskManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/manager/Types.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/manager/managers/Types.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/task/Epic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/task/Epic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/task/SubTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/task/SubTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/java/task/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/task/Task.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/.idea/csv-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/.idea/csv-plugin.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/csv-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/csv-plugin.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/history.csv" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/history.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/java-kanban.iml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/java-kanban.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.history.csv" beforeDir="false" afterPath="$PROJECT_DIR$/test.history.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/manager/api/http/HttpTaskServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/manager/api/http/HttpTaskServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/manager/managers/FileBackedTasksManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/manager/managers/FileBackedTasksManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/manager/managers/HttpTaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/manager/managers/HttpTaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/manager/managers/InMemoryTaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/manager/managers/InMemoryTaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/java/manager/managers/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/java/manager/managers/TaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/target/classes/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/target/classes/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/filebacked/FileBackedTasksManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/filebacked/FileBackedTasksManagerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/history/InMemoryHistoryManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/history/InMemoryHistoryManagerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/httpmanager/HttpTaskManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/httpmanager/HttpTaskManagerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/httpserver/HttpTaskServerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/httpserver/HttpTaskServerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/inmemory/InMemoryTaskManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/inmemory/InMemoryTaskManagerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -49,8 +37,8 @@
       <list>
         <option value="Interface" />
         <option value="Enum" />
-        <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -78,27 +66,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Downloaded.Files.Path.Enabled": "false",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "create.test.in.the.same.root": "true",
-    "jdk.selected.JAVA_MODULE": "11",
-    "last_directory_selection": "/Users/macbook/Desktop/dev/java-kanban/src/java/manager/api/http",
-    "last_opened_file_path": "/Users/macbook/Desktop/dev/java-kanban",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "MavenSettings"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;create.test.in.the.same.root&quot;: &quot;true&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;11&quot;,
+    &quot;last_directory_selection&quot;: &quot;/Users/macbook/Desktop/dev/java-kanban/src/java/manager/api/http&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/macbook/Desktop/dev/java-kanban&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="test.filebacked" />
@@ -208,7 +196,7 @@
       <module name="java-kanban" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="test.*" />
+          <option name="PATTERN" value="test.inmemory.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -242,7 +230,7 @@
       <module name="java-kanban" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="test.*" />
+          <option name="PATTERN" value="test.inmemory.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -278,13 +266,13 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Application.manager.managers.FileBackedTasksManager" />
       <item itemvalue="Application.manager.FileBackedTasksManager" />
+      <item itemvalue="Application.manager.managers.FileBackedTasksManager" />
       <item itemvalue="JUnit.TaskManagerTests" />
+      <item itemvalue="JUnit.HttpTaskManagerTest" />
       <item itemvalue="JUnit.HttpTaskManagerTest.loadFromServerTest" />
       <item itemvalue="JUnit.HttpTaskServeTest" />
       <item itemvalue="JUnit.HttpTaskServerTest" />
-      <item itemvalue="JUnit.HttpTaskManagerTest" />
       <item itemvalue="JUnit.test in java-kanban" />
       <item itemvalue="Maven.JUnit5Examples [test]" />
     </list>

@@ -46,7 +46,7 @@ class HttpTaskManagerTest {
 
 
         HttpTaskManager newManager = new HttpTaskManager(KVServer.PORT, true);
-        assertEquals(manager.getTask(), newManager.getTask(), "Список задач не совпадает"); //файл без истории
+        assertEquals(manager.getTasks(), newManager.getTasks(), "Список задач не совпадает"); //файл без истории
 
         manager.getTaskById(task.getId());
         manager.getTaskById(task1.getId());

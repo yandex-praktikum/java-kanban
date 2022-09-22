@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.*;
         Task task = new Task("Погулять", 1, "Оделся и пошёл", Status.NEW,
                 0L, dateTime);
         manager.addNewTask(task);
-        final List<Task> tasks = manager.getTask();
+        final List<Task> tasks = manager.getTasks();
         assertNotNull(tasks, "Задачи на возвращаются");
         assertEquals(task, tasks.get(0), "Задачи не совпадают");
         serv.stop();
@@ -56,7 +56,7 @@ import static org.junit.jupiter.api.Assertions.*;
         Epic epic = new Epic("Обед", 10, "Котлетки с пюрешкой и салатиком",
                 0L, dateTime.minusHours(10), dateTime.minusHours(9));
         manager.addNewEpic(epic);
-        final List<Epic> epics = manager.getEpic();
+        final List<Epic> epics = manager.getEpics();
         assertNotNull(epics, "Задачи на возвращаются");
         assertEquals(epic, epics.get(0), "Задачи не совпадают");
         serv.stop();
@@ -72,7 +72,7 @@ import static org.junit.jupiter.api.Assertions.*;
         SubTask subtask = new SubTask("Котлетки", 100, "Жарим", Status.NEW,
                 epic.getId(), 0L, dateTime.minusHours(1));
         manager.addNewSubTask(subtask);
-        final List<SubTask> subs = manager.getSubTask();
+        final List<SubTask> subs = manager.getSubTasks();
 
         assertNotNull(subs, "Задачи на возвращаются");
         assertEquals(subtask, subs.get(0), "Задачи не совпадают");
@@ -124,7 +124,7 @@ import static org.junit.jupiter.api.Assertions.*;
                 0L, dateTime);
         manager.addNewTask(task);
         manager.deleteAllTasks();
-        assertTrue(manager.getTask().isEmpty(), "Таски не удаляются");
+        assertTrue(manager.getTasks().isEmpty(), "Таски не удаляются");
         serv.stop();
     }
 
@@ -139,7 +139,7 @@ import static org.junit.jupiter.api.Assertions.*;
                 epic.getId(), 0L, dateTime.minusHours(1));
         manager.addNewSubTask(subtask);
         manager.deleteAllSubTasks();
-        assertTrue(manager.getSubTask().isEmpty(), "Сабтаски не удаляются");
+        assertTrue(manager.getSubTasks().isEmpty(), "Сабтаски не удаляются");
         serv.stop();
     }
 
@@ -151,7 +151,7 @@ import static org.junit.jupiter.api.Assertions.*;
                 0L, dateTime.minusHours(10), dateTime.minusHours(9));
         manager.addNewEpic(epic);
         manager.deleteAllEpics();
-        assertTrue(manager.getEpic().isEmpty(), "Эпики не удаляются");
+        assertTrue(manager.getEpics().isEmpty(), "Эпики не удаляются");
         serv.stop();
     }
 
@@ -163,7 +163,7 @@ import static org.junit.jupiter.api.Assertions.*;
                 0L, dateTime);
         manager.addNewTask(task);
         manager.deleteTaskById(task.getId());
-        assertTrue(manager.getTask().isEmpty(), "Таски не удаляются");
+        assertTrue(manager.getTasks().isEmpty(), "Таски не удаляются");
         serv.stop();
     }
 
@@ -178,7 +178,7 @@ import static org.junit.jupiter.api.Assertions.*;
                 epic.getId(), 0L, dateTime.minusHours(1));
         manager.addNewSubTask(subtask);
         manager.deleteSubTaskById(subtask.getId());
-        assertTrue(manager.getSubTask().isEmpty(), "Сабтаски не удаляются");
+        assertTrue(manager.getSubTasks().isEmpty(), "Сабтаски не удаляются");
         serv.stop();
     }
 
@@ -190,7 +190,7 @@ import static org.junit.jupiter.api.Assertions.*;
                 0L, dateTime.minusHours(10), dateTime.minusHours(9));
         manager.addNewEpic(epic);
         manager.deleteEpicById(epic.getId());
-        assertTrue(manager.getEpic().isEmpty(), "Эпики не удаляются");
+        assertTrue(manager.getEpics().isEmpty(), "Эпики не удаляются");
         serv.stop();
     }
 }
