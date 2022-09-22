@@ -7,6 +7,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+/** Клиент для взаимодействия с сервером, хранящим данные менеджера. Регистрирует пользователя на сервере, выгружает
+ *  данные для создания менеджера и сохраняет изменения.**/
 
 public class KVTaskClient {
     private final String url;

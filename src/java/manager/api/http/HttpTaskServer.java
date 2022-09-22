@@ -15,6 +15,8 @@ import java.net.InetSocketAddress;
 import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+/** Сервер, через который происходит взаимодействие TaskManager - пользователь. Принимает запросы со стороны клиента и
+ *  возвращает ответ от менеджера в формате json response. **/
 
 public class HttpTaskServer {
     public static final int PORT = 8080;

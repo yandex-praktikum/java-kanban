@@ -9,7 +9,7 @@ import task.Task;
 
 import java.lang.reflect.Type;
 import java.util.List;
-
+/** Менеджер для взаимодействия с KVTaskClient. Сохраняет, выгружает, добавляет в менеджер  данные с сервера. **/
 public class HttpTaskManager extends FileBackedTasksManager {
     private final Gson gson;
     private final KVTaskClient client;

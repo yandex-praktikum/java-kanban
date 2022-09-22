@@ -3,7 +3,7 @@ package manager.history;
 import task.Task;
 
 import java.util.*;
-
+/** Менеджер истории, реализованный в виде двусвязного списка. **/
 public class InMemoryHistoryManager implements HistoryManager {
     private Node head;
     private Node tail;

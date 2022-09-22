@@ -10,7 +10,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
-
+/** Реализация основной логики менеджера.  **/
 public class InMemoryTaskManager implements TaskManager {
     protected int taskId = 10;
     protected int epicId = 20;

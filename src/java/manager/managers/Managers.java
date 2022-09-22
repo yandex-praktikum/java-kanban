@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 
 import static manager.api.server.KVServer.PORT;
 
-
+/** Фабрика менеджеров. **/
 public class Managers {
 
     private Managers () {

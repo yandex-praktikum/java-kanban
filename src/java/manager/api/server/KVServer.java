@@ -15,6 +15,9 @@ public class KVServer {
     private final String apiToken;
     private final HttpServer server;
     private final Map<String, String> data = new HashMap<>();
+    /** Сервер для хранения данных менеджера. Доступ к данным реализован через авторизацию по api token.
+     *  Данные хранятся в json формате.
+     *  **/
 
     public KVServer() throws IOException {
         apiToken = generateApiToken();

@@ -5,7 +5,7 @@ import task.*;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.*;
-
+/** Реализация менеджера через хранение данных в .csv файле. **/
 public class FileBackedTasksManager extends InMemoryTaskManager {
     public static File file = new File("history.csv");
 
