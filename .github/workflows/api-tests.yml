@@ -2,7 +2,51 @@ name: Java Tests
 
 on:
   pull_request:
+  workflow_call:
 
 jobs:
-  build:
-    uses: yandex-praktikum/java-kanban/.github/workflows/api-tests.yml@ci
+  build-task-manager:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout target repo
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Checkout tests
+        uses: actions/checkout@v3
+        with:
+          repository: 'yandex-praktikum/java-kanban'
+          ref: ci
+          path: tests
+
+      - name: CheckStyle
+        run: |
+          find ./src -type f -name "*.java" > sources.txt
+          while read FILE; do
+            if [ -f "$FILE" ];  then
+              echo Check: $FILE
+              java -jar ./tests/lib/checkstyle-10.13.0-all.jar -c ./tests/checkstyle.xml $FILE
+            fi
+          done < sources.txt
+
+      - name: Build application
+        run: |
+          find ./src -type f -name "*.java" > sources.txt
+          javac -d out -cp ./lib/*:./src @sources.txt
+
+      - name: Build tests
+        run: |
+          find ./test -type f -name "*.java" > tests.txt
+          javac -d out -cp ./out:./tests/lib/junit-platform-console-standalone-1.9.3.jar:./lib/*:./test @tests.txt
+
+      - name: Run tests
+        run: |
+          java -jar ./tests/lib/junit-platform-console-standalone-1.9.3.jar --class-path ./lib/*:./out --scan-class-path
+
