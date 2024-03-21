@@ -44,9 +44,9 @@ jobs:
       - name: Build tests
         run: |
           find ./test -type f -name "*.java" > tests.txt
-          javac -d out -cp ./out:./tests/lib/junit-platform-console-standalone-1.9.3.jar:./lib/*:./test @tests.txt
+          javac -d out -cp ./out:./tests/lib/junit-platform-console-standalone-1.9.3.jar:./tests/lib/gson-2.10.1.jar:./test @tests.txt
 
       - name: Run tests
         run: |
-          java -jar ./tests/lib/junit-platform-console-standalone-1.9.3.jar --class-path ./lib/*:./out --scan-class-path
+          java -jar ./tests/lib/junit-platform-console-standalone-1.9.3.jar --class-path ./tests/lib/gson-2.10.1.jar:./out --scan-class-path
 
